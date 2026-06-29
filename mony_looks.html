@@ -1,0 +1,1404 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;padding:0;background:#fff;}
+.app{background:#030303;border-radius:18px;padding:22px;font-family:var(--font-sans);color:#fff;width:calc(100vw - 20px);max-width:none;height:calc(100vh - 20px);margin:10px;position:relative;overflow:hidden;display:flex;flex-direction:column;overflow:hidden;display:flex;flex-direction:column}
+.setup{background:#161616;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;flex:0 0 auto}
+.setup-field{display:flex;flex-direction:column;gap:4px;flex:1;min-width:120px}
+.setup-label{font-size:11px;color:#666}
+.setup input{background:#0d0d0d;border:0.5px solid #333;border-radius:8px;color:#fff;padding:8px 12px;font-size:14px;outline:none;width:100%}
+.setup input:focus{border-color:#8ecfb0}
+.setup input::placeholder{color:#444}
+.setup button{background:#8ecfb0;border:none;border-radius:8px;color:#0d0d0d;font-weight:700;font-size:13px;padding:9px 16px;cursor:pointer;white-space:nowrap;align-self:flex-end}
+.setup button:hover{background:#7cc0a0}
+.project-title{font-size:22px;font-weight:500;color:#fff;margin-bottom:2px;min-height:28px}
+.header{display:flex;gap:14px;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;flex:0 0 auto}
+.saved-block{flex:1;min-width:140px}
+.saved-label{font-size:11px;color:#777;margin-bottom:4px}
+.saved-num{font-size:38px;font-weight:500;color:#fff;line-height:1}
+.goal-row{font-size:12px;color:#555;margin-top:5px}
+.goal-row span{color:#8ecfb0}
+.progress-bar-bg{background:#222;border-radius:6px;height:6px;margin-top:8px;width:100%;max-width:260px}
+.progress-bar-fill{background:#8ecfb0;border-radius:6px;height:6px;transition:width 0.5s}
+.pct-pill{background:#1e1e1e;border-radius:12px;padding:10px 14px;text-align:center}
+.pct-pill-top{font-size:10px;color:#666}
+.pct-pill-val{background:#8ecfb0;border-radius:8px;padding:4px 10px;font-size:19px;font-weight:700;color:#0d0d0d;margin-top:5px}
+.in-out{display:flex;gap:14px;align-items:center}
+.io-card{text-align:center}
+.io-box{width:64px;height:64px;border-radius:12px;margin-bottom:5px}
+.io-box-in{background:#8ecfb0}
+.io-box-out{background:#4a4344}
+.io-label{font-size:11px;color:#666}
+.io-val{font-size:13px;font-weight:500;color:#ccc}
+.chart-wrap{position:relative;width:100%;height:320px;margin:8px 0 16px;flex:0 0 320px}
+.entries{background:#161616;border-radius:12px;overflow-y:auto;flex:1 1 auto;min-height:110px;max-height:none}
+.entries-head{display:grid;grid-template-columns:1fr 110px 110px 28px;gap:8px;padding:9px 14px;font-size:11px;color:#555;border-bottom:0.5px solid #222;position:sticky;top:0;background:#161616;z-index:2}
+.entry-row{display:grid;grid-template-columns:1fr 110px 110px 28px;gap:8px;padding:9px 14px;font-size:13px;border-bottom:0.5px solid #1a1a1a;align-items:center;min-height:36px}
+.e-desc{color:#bbb;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.e-in{color:#8ecfb0;text-align:right}
+.e-out{color:#c87;text-align:right}
+.e-dash{color:#333;text-align:right}
+.e-del{color:#444;cursor:pointer;text-align:center;font-size:16px;line-height:1;background:none;border:none}
+.e-del:hover{color:#c87}
+.total-row{display:grid;grid-template-columns:1fr 110px 110px 28px;gap:8px;padding:11px 14px;font-size:14px;font-weight:500;background:#111;border-top:0.5px solid #2a2a2a;position:sticky;bottom:0;z-index:2}
+.add-form{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;flex:0 0 auto}
+.add-form input{background:#161616;border:0.5px solid #2a2a2a;border-radius:8px;color:#fff;padding:9px 12px;font-size:14px;flex:1;min-width:80px;outline:none}
+.add-form input:focus{border-color:#8ecfb0}
+.add-form input::placeholder{color:#444}
+.add-form select{background:#161616;border:0.5px solid #2a2a2a;border-radius:8px;color:#fff;padding:9px 10px;font-size:14px;outline:none}
+.add-form button{background:#8ecfb0;border:none;border-radius:8px;color:#0d0d0d;font-weight:700;font-size:14px;padding:9px 16px;cursor:pointer}
+.add-form button:hover{background:#7cc0a0}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+.header{justify-content:space-between;}
+@media (max-width:700px){
+.app{height:calc(100vh - 20px);min-height:0;margin:10px auto;width:calc(100vw - 20px);padding:16px;}
+.chart-wrap{height:220px;flex-basis:220px;}
+.settings-btn{
+position:absolute;
+top:12px;
+right:12px;
+width:42px;
+height:42px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#000;
+color:#fff;
+border:1px solid #2b2b2b;
+border-radius:50%;
+cursor:pointer;
+z-index:999;
+padding:0;
+line-height:1;
+font-size:20px;
+}
+.settings-panel{
+position:absolute;
+top:60px;
+right:12px;
+width:280px;
+display:none;
+background:#0b0b0b;
+border:1px solid #222;
+border-radius:14px;
+padding:14px;
+z-index:1000;
+box-shadow:0 16px 40px rgba(0,0,0,.55);
+}
+.setup{padding-right:58px;}
+.entries-head,.entry-row,.total-row{grid-template-columns:1fr 80px 80px 28px;}
+.saved-num{font-size:30px;}
+.setup,.add-form{flex-direction:column;}
+.setup button,.add-form button,.add-form select{width:100%;}
+}
+
+.entry-row span,.entries-head span,.total-row span{min-width:0;}
+
+:root{
+  --bg-page:#000;
+  --bg-app:#030303;
+  --bg-panel:#080808;
+  --bg-panel-2:#050505;
+  --text-main:#fff;
+  --text-muted:#777;
+  --line:#151515;
+  --accent:#8ecfb0;
+  --out:#c87;
+}
+
+body.light-mode{
+  --bg-page:#f4f4f2;
+  --bg-app:#ffffff;
+  --bg-panel:#f0f0ee;
+  --bg-panel-2:#fafafa;
+  --text-main:#111;
+  --text-muted:#666;
+  --line:#d9d9d6;
+  --accent:#2f9f6b;
+  --out:#b75d45;
+}
+
+body{background:var(--bg-page)!important;color:var(--text-main);}
+.app{background:var(--bg-app)!important;color:var(--text-main);position:relative;}
+.setup,.entries,.add-form input,.add-form select{background:var(--bg-panel)!important;}
+.entries-head{background:var(--bg-panel)!important;}
+.total-row{background:var(--bg-panel-2)!important;}
+.setup input{background:var(--bg-app)!important;color:var(--text-main)!important;}
+.add-form input,.add-form select{color:var(--text-main)!important;}
+.project-title,.saved-num{color:var(--text-main)!important;}
+.saved-label,.setup-label,.io-label,.pct-pill-top,.goal-row{color:var(--text-muted)!important;}
+.e-desc{color:var(--text-main)!important;}
+.e-in,.goal-row span{color:var(--accent)!important;}
+.e-out{color:var(--out)!important;}
+.progress-bar-fill,.io-box-in,.pct-pill-val,.setup button,.add-form button{background:var(--accent)!important;}
+.pct-pill{background:var(--bg-panel)!important;}
+
+.settings-btn{
+  position:absolute;
+  top:18px;
+  right:18px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:1px solid var(--line);
+  background:var(--bg-panel);
+  color:var(--text-main);
+  font-size:20px;
+  cursor:pointer;
+  z-index:30;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  line-height:1;
+  appearance:none;
+  -webkit-appearance:none;
+}
+.settings-btn:hover{transform:rotate(25deg);}
+.settings-panel{
+  position:absolute;
+  top:68px;
+  right:18px;
+  width:280px;
+  background:var(--bg-panel);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px;
+  z-index:40;
+  box-shadow:0 16px 40px rgba(0,0,0,.55);
+  display:none;
+}
+.settings-panel.open{display:block;}
+.settings-title{font-size:15px;font-weight:700;margin-bottom:12px;color:var(--text-main);}
+.setting-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line);}
+.setting-row:first-of-type{border-top:0;}
+.setting-label{font-size:13px;color:var(--text-main);}
+.setting-note{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.setting-select{
+  background:var(--bg-app);
+  color:var(--text-main);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:7px 8px;
+}
+.switch{position:relative;display:inline-block;width:44px;height:24px;flex:0 0 auto;}
+.switch input{opacity:0;width:0;height:0;}
+.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#333;transition:.2s;border-radius:24px;}
+.slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:white;transition:.2s;border-radius:50%;}
+.switch input:checked + .slider{background:var(--accent);}
+.switch input:checked + .slider:before{transform:translateX(20px);}
+
+
+.topbar{
+  height:54px;
+  flex:0 0 54px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  border-bottom:1px solid var(--line);
+  margin:-6px 0 16px 0;
+}
+.topbar .settings-btn{
+  position:static!important;
+  width:42px;
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000;
+  color:#fff;
+  border:1px solid #2b2b2b;
+  border-radius:50%;
+  cursor:pointer;
+  z-index:999;
+  padding:0;
+  line-height:1;
+  font-size:20px;
+}
+.topbar .settings-panel{
+  position:absolute!important;
+  top:50px!important;
+  right:0!important;
+  width:280px;
+  display:none;
+  background:#0b0b0b;
+  border:1px solid #222;
+  border-radius:14px;
+  padding:14px;
+  z-index:1000;
+  box-shadow:0 16px 40px rgba(0,0,0,.55);
+}
+
+
+/* Clean settings menu + sharper colors */
+.app{
+  box-shadow:none!important;
+}
+
+.setup button,
+.add-form button,
+.pct-pill-val,
+.io-box-in,
+.io-box-out,
+.topbar .settings-btn,
+.settings-panel{
+  box-shadow:none!important;
+  text-shadow:none!important;
+}
+
+.e-out,
+#ioOut,
+#totalOut{
+  color:#ff3b30!important;
+  text-shadow:none!important;
+}
+
+.io-box-out{
+  background:#ff3b30!important;
+  box-shadow:none!important;
+}
+
+.topbar{
+  height:58px;
+  flex:0 0 58px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  border-bottom:1px solid var(--line);
+  margin:-6px 0 16px 0;
+}
+
+.topbar .settings-btn{
+  position:static!important;
+  width:42px;
+  height:42px;
+  min-width:42px;
+  min-height:42px;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:#000!important;
+  color:#fff!important;
+  border:1px solid #262626!important;
+  border-radius:50%!important;
+  cursor:pointer;
+  z-index:999;
+  padding:0!important;
+  line-height:1!important;
+  font-size:20px!important;
+}
+
+.topbar .settings-btn:hover{
+  border-color:#8ecfb0!important;
+  transform:none!important;
+}
+
+.topbar .settings-panel{
+  position:absolute!important;
+  top:52px!important;
+  right:0!important;
+  width:330px!important;
+  display:none;
+  background:#080808!important;
+  color:#fff!important;
+  border:1px solid #242424!important;
+  border-radius:16px!important;
+  padding:16px!important;
+  z-index:1000!important;
+}
+
+.topbar .settings-panel.open{
+  display:block!important;
+}
+
+.settings-title{
+  font-size:16px!important;
+  font-weight:700!important;
+  color:#fff!important;
+  margin-bottom:12px!important;
+  text-shadow:none!important;
+}
+
+.setting-row{
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:center!important;
+  gap:14px!important;
+  padding:13px 0!important;
+  border-top:1px solid #1d1d1d!important;
+}
+
+.setting-row:first-of-type{
+  border-top:0!important;
+}
+
+.setting-label{
+  font-size:14px!important;
+  color:#fff!important;
+}
+
+.setting-note{
+  font-size:11px!important;
+  color:#777!important;
+  margin-top:3px!important;
+  line-height:1.25!important;
+}
+
+.setting-select{
+  background:#000!important;
+  color:#fff!important;
+  border:1px solid #2a2a2a!important;
+  border-radius:10px!important;
+  padding:8px 10px!important;
+  outline:none!important;
+}
+
+.setting-select:focus,
+.setup input:focus,
+.add-form input:focus,
+.add-form select:focus{
+  border-color:#8ecfb0!important;
+  box-shadow:none!important;
+}
+
+.switch{
+  position:relative!important;
+  display:inline-block!important;
+  width:46px!important;
+  height:26px!important;
+  flex:0 0 auto!important;
+}
+
+.switch input{
+  opacity:0!important;
+  width:0!important;
+  height:0!important;
+}
+
+.slider{
+  position:absolute!important;
+  cursor:pointer!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  bottom:0!important;
+  background:#2c2c2c!important;
+  transition:.2s!important;
+  border-radius:26px!important;
+}
+
+.slider:before{
+  position:absolute!important;
+  content:""!important;
+  height:20px!important;
+  width:20px!important;
+  left:3px!important;
+  bottom:3px!important;
+  background:#fff!important;
+  transition:.2s!important;
+  border-radius:50%!important;
+}
+
+.switch input:checked + .slider{
+  background:#8ecfb0!important;
+}
+
+.switch input:checked + .slider:before{
+  transform:translateX(20px)!important;
+}
+
+/* Light mode: clean, no blur/glow */
+body.light-mode{
+  background:#f3f3f1!important;
+}
+
+body.light-mode .topbar .settings-panel{
+  background:#fff!important;
+  color:#111!important;
+  border-color:#d9d9d6!important;
+}
+
+body.light-mode .settings-title,
+body.light-mode .setting-label{
+  color:#111!important;
+}
+
+body.light-mode .setting-note{
+  color:#666!important;
+}
+
+body.light-mode .setting-select{
+  background:#f5f5f3!important;
+  color:#111!important;
+  border-color:#d0d0cc!important;
+}
+
+
+/* Smooth, sharp glow — not blurry text */
+.app{
+  border:1px solid rgba(142,207,176,.10)!important;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.02),
+    0 18px 70px rgba(0,0,0,.55),
+    inset 0 0 0 1px rgba(142,207,176,.035)!important;
+}
+
+.setup,
+.entries,
+.pct-pill,
+.add-form input,
+.add-form select,
+.setup input{
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.015)!important;
+}
+
+.setup input:focus,
+.add-form input:focus,
+.add-form select:focus,
+.setting-select:focus{
+  border-color:#8ecfb0!important;
+  box-shadow:0 0 0 3px rgba(142,207,176,.16)!important;
+}
+
+.setup button,
+.add-form button{
+  transition:transform .15s ease, box-shadow .2s ease, background .2s ease;
+  box-shadow:0 0 0 1px rgba(142,207,176,.18), 0 8px 22px rgba(142,207,176,.10)!important;
+}
+
+.setup button:hover,
+.add-form button:hover{
+  transform:translateY(-1px);
+  box-shadow:0 0 0 1px rgba(142,207,176,.28), 0 10px 28px rgba(142,207,176,.16)!important;
+}
+
+.progress-bar-fill{
+  box-shadow:0 0 16px rgba(142,207,176,.22)!important;
+}
+
+.project-switcher{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-right:auto;
+}
+
+.project-switcher-label{
+  font-size:12px;
+  color:var(--text-muted);
+  white-space:nowrap;
+}
+
+.project-select{
+  min-width:220px;
+  max-width:360px;
+  background:var(--bg-panel);
+  color:var(--text-main);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:9px 10px;
+  outline:none;
+}
+
+.project-mini-btn{
+  background:var(--bg-panel);
+  color:var(--text-main);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:9px 11px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.project-mini-btn:hover{
+  border-color:#8ecfb0;
+}
+
+body.light-mode .app{
+  border:1px solid rgba(47,159,107,.10)!important;
+  box-shadow:0 18px 50px rgba(0,0,0,.10)!important;
+}
+
+body.light-mode .project-select,
+body.light-mode .project-mini-btn{
+  background:#fff;
+  color:#111;
+  border-color:#d9d9d6;
+}
+
+@media (max-width:700px){
+  .project-switcher{width:100%;order:2;margin-top:8px;}
+  .project-select{flex:1;min-width:0;}
+}
+
+
+.storage-row{
+  display:block!important;
+}
+.storage-path{
+  margin-top:8px;
+  padding:8px 10px;
+  background:#000;
+  border:1px solid #242424;
+  border-radius:10px;
+  color:#8ecfb0;
+  font-size:12px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  word-break:break-word;
+}
+body.light-mode .storage-path{
+  background:#f5f5f3;
+  border-color:#d0d0cc;
+  color:#2f9f6b;
+}
+
+
+/* Clear glow values */
+.saved-num,
+#pctVal,
+#ioIn,
+#ioOut,
+#totalIn,
+#totalOut{
+  text-shadow:none!important;
+}
+
+#ioIn,
+#totalIn{
+  filter:drop-shadow(0 0 5px rgba(142,207,176,.35));
+}
+
+#ioOut,
+#totalOut{
+  filter:drop-shadow(0 0 5px rgba(255,59,48,.38));
+}
+
+#pctVal{
+  box-shadow:0 0 18px rgba(142,207,176,.18)!important;
+}
+
+/* Storage help */
+.storage-help-btn{
+  margin-top:10px;
+  width:100%;
+  background:#111;
+  color:#8ecfb0;
+  border:1px solid #242424;
+  border-radius:10px;
+  padding:9px 10px;
+  cursor:pointer;
+  font-weight:700;
+}
+
+.storage-help-btn:hover{
+  border-color:#8ecfb0;
+}
+
+.storage-help{
+  display:none;
+  margin-top:10px;
+  padding:11px 12px;
+  background:#050505;
+  border:1px solid #222;
+  border-radius:12px;
+  color:#cfcfcf;
+  font-size:12px;
+  line-height:1.45;
+}
+
+.storage-help.open{
+  display:block;
+}
+
+body.light-mode .storage-help-btn{
+  background:#f5f5f3;
+  color:#2f9f6b;
+  border-color:#d0d0cc;
+}
+
+body.light-mode .storage-help{
+  background:#fff;
+  color:#333;
+  border-color:#d9d9d6;
+}
+
+
+.chart-wrap{overflow:hidden!important;}
+
+
+
+
+
+.zero-line-note{
+  font-size:11px;
+  color:var(--text-muted);
+  margin-top:-8px;
+  margin-bottom:8px;
+  display:none;
+}
+
+.zero-line-note.show{
+  display:block;
+}
+
+
+/* Crisp chart rendering: no canvas stretching */
+.chart-wrap{
+  height:320px!important;
+  flex:0 0 320px!important;
+  overflow:hidden!important;
+}
+
+.chart-wrap canvas{
+  width:100%!important;
+  height:100%!important;
+  display:block;
+}
+
+.zero-line-note{
+  font-size:11px;
+  color:var(--text-muted);
+  margin-top:-8px;
+  margin-bottom:8px;
+  display:none;
+}
+
+.zero-line-note.show{
+  display:block;
+}
+
+/* Language switch should clearly affect the whole app */
+.lang-flash{
+  animation:langFlash .28s ease;
+}
+
+@keyframes langFlash{
+  from{opacity:.72}
+  to{opacity:1}
+}
+
+</style>
+
+<h2 class="sr-only">Savings tracker — set your goal, track income and costs</h2>
+
+<div class="app">
+
+  <div class="topbar">
+
+    <div class="project-switcher">
+      <span class="project-switcher-label" data-i18n="projectSwitcher">Project</span>
+      <select id="projectSelect" class="project-select" onchange="switchProject(this.value)"></select>
+      <button class="project-mini-btn" onclick="createProject()" title="Nový projekt">+</button>
+      <button class="project-mini-btn" onclick="deleteProject()" title="Smazat projekt">×</button>
+    </div>
+
+
+
+  <button class="settings-btn" onclick="toggleSettings()" title="Nastavení" aria-label="Nastavení">&#9881;</button>
+  
+<div class="settings-panel" id="settingsPanel">
+  <div class="settings-title" data-i18n="settingsTitle">Settings</div>
+
+  <div class="setting-row">
+    <div>
+      <div class="setting-label" data-i18n="vibrationLabel">Vibration when adding an amount</div>
+      <div class="setting-note" data-i18n="vibrationNote">Short phone vibration after every added transaction</div>
+    </div>
+    <label class="switch">
+      <input type="checkbox" id="vibrateToggle" checked onchange="saveSettings()">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="setting-row">
+    <div>
+      <div class="setting-label" data-i18n="themeLabel">Theme mode</div>
+      <div class="setting-note" data-i18n="themeNote">Choose light or dark mode</div>
+    </div>
+    <select class="setting-select" id="themeSelect" onchange="saveSettings()">
+      <option value="dark" data-i18n="darkMode">Dark</option>
+      <option value="light" data-i18n="lightMode">Light</option>
+    </select>
+  </div>
+
+  <div class="setting-row">
+    <div>
+      <div class="setting-label" data-i18n="languageLabel">Language</div>
+      <div class="setting-note" data-i18n="languageNote">Choose the app language</div>
+    </div>
+    <select class="setting-select" id="languageSelect" onchange="saveSettings()">
+      <option value="en">English</option>
+      <option value="cs">Čeština</option>
+      <option value="es">Español</option>
+    </select>
+  </div>
+
+  <div class="setting-row storage-row">
+    <div>
+      <div class="setting-label" data-i18n="storageTitle">Where is my data stored?</div>
+      <div class="setting-note" data-i18n="storageNote">Projects are saved only on this device and in this app. They are not sent to the internet.</div>
+      <div class="storage-path" id="storagePath" data-i18n="storagePath">📱 This device → app storage</div>
+      <button class="storage-help-btn" onclick="toggleStorageHelp()" type="button" data-i18n="storageHelpButton">How does it work?</button>
+      <div class="storage-help" id="storageHelp" data-i18n-html="storageHelpText">
+        <strong>Simple version:</strong> the app remembers your projects directly inside your browser or desktop app.
+        <br><br>
+        If you open the same file on the same device, your data stays there. If you send the file to another computer, the data does not move automatically.
+        <br><br>
+        If you clear browser/app data, saved projects may be removed too.
+      </div>
+    </div>
+  </div>
+
+</div>
+  </div>
+
+  <div class="setup">
+    <div class="setup-field">
+      <span class="setup-label" data-i18n="projectName">Project name</span>
+      <input type="text" id="projInput" data-i18n-placeholder="projectPlaceholder" placeholder="My Project" maxlength="40">
+    </div>
+    <div class="setup-field" style="max-width:160px">
+      <span class="setup-label" data-i18n="savingsGoal">Savings goal (Kč)</span>
+      <input type="text" id="goalInput" data-i18n-placeholder="goalPlaceholder" placeholder="My Target" inputmode="numeric">
+    </div>
+    <button onclick="applySetup()" data-i18n="setGoal">Set goal</button>
+  </div>
+
+  <div class="project-title" id="projTitle">My savings goal</div>
+
+  <div class="header">
+    <div class="saved-block">
+      <div class="saved-label" data-i18n="savedSoFar">Saved so far</div>
+      <div class="saved-num" id="bigNum">0 Kč</div>
+      <div class="goal-row"><span data-i18n="goalWord">Goal</span>: <span id="goalDisplay"> Kč</span> — <span id="pctLabel">0%</span> <span data-i18n="reached">reached</span></div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="progBar" style="width:0%"></div></div>
+    </div>
+    <div class="pct-pill">
+      <div class="pct-pill-top" id="pctTop">%</div>
+      <div class="pct-pill-val" id="pctVal">0%</div>
+    </div>
+    <div class="in-out">
+      <div class="io-card">
+        <div class="io-box io-box-in"></div>
+        <div class="io-label" data-i18n="incoming">incoming</div>
+        <div class="io-val" id="ioIn">0 Kč</div>
+      </div>
+      <div class="io-card">
+        <div class="io-box io-box-out"></div>
+        <div class="io-label" data-i18n="outgoing">outgoing</div>
+        <div class="io-val" id="ioOut">0 Kč</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-wrap" id="chartWrap">
+    <canvas id="chart" role="img" aria-label="Line chart showing savings progress over time"></canvas>
+  </div>
+  <div class="zero-line-note" id="zeroLineNote" data-i18n="negativeNote">Negative balance is visible below zero. Scroll the chart vertically if needed.</div>
+
+  <div class="entries">
+    <div class="entries-head"><span data-i18n="description">Description</span><span style="text-align:right" data-i18n="incomingTitle">Incoming</span><span style="text-align:right" data-i18n="outgoingTitle">Outgoing</span><span></span></div>
+    <div id="rows"></div>
+    <div class="total-row">
+      <span style="color:#888" data-i18n="totalSaved">Total saved</span>
+      <span class="e-in" id="totalIn">0 Kč</span>
+      <span class="e-out" id="totalOut">0 Kč</span>
+      <span></span>
+    </div>
+  </div>
+
+  <div class="add-form">
+    <input type="text" id="desc" data-i18n-placeholder="descriptionPlaceholder" placeholder="Description" maxlength="40">
+    <input type="text" id="amount" data-i18n-placeholder="amountPlaceholder" placeholder="Amount (Kč)" inputmode="numeric">
+    <select id="type">
+      <option value="in" data-i18n="incoming">incoming</option>
+      <option value="out" data-i18n="outgoing">outgoing</option>
+    </select>
+    <button onclick="addEntry()" data-i18n="addButton">+ Add</button>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+
+let settings = {
+  vibrate: true,
+  theme: 'dark',
+  language: 'en'
+};
+
+function loadSettings(){
+  try{
+    const saved = JSON.parse(localStorage.getItem('savingsSettings') || '{}');
+    settings = {...settings, ...saved};
+  }catch(e){}
+
+  const vibrateToggle = document.getElementById('vibrateToggle');
+  const themeSelect = document.getElementById('themeSelect');
+  const languageSelect = document.getElementById('languageSelect');
+
+  if(vibrateToggle) vibrateToggle.checked = !!settings.vibrate;
+  if(themeSelect) themeSelect.value = settings.theme || 'dark';
+  if(languageSelect) languageSelect.value = settings.language || 'en';
+
+  applyTheme();
+  applyLanguage();
+}
+
+function saveSettings(){
+  const vibrateToggle = document.getElementById('vibrateToggle');
+  const themeSelect = document.getElementById('themeSelect');
+  const languageSelect = document.getElementById('languageSelect');
+
+  settings.vibrate = vibrateToggle ? vibrateToggle.checked : true;
+  settings.theme = themeSelect ? themeSelect.value : 'dark';
+  settings.language = languageSelect ? languageSelect.value : 'en';
+
+  localStorage.setItem('savingsSettings', JSON.stringify(settings));
+  applyTheme();
+  applyLanguage();
+}
+
+
+function toggleStorageHelp(){
+  const box = document.getElementById('storageHelp');
+  if(box) box.classList.toggle('open');
+}
+
+function toggleSettings(){
+  document.getElementById('settingsPanel').classList.toggle('open');
+}
+
+function applyTheme(){
+  document.body.classList.toggle('light-mode', settings.theme === 'light');
+  if(chart){
+    const root = getComputedStyle(document.body);
+    const accent = root.getPropertyValue('--accent').trim();
+    const line = root.getPropertyValue('--line').trim();
+    const textMuted = root.getPropertyValue('--text-muted').trim();
+    const panel = root.getPropertyValue('--bg-panel').trim();
+
+    chart.data.datasets[0].borderColor = accent;
+    chart.data.datasets[0].pointBackgroundColor = ctx => {
+      if(!ctx.chart.data.datasets[0].data || ctx.dataIndex === 0) return accent;
+      const data = ctx.chart.data.datasets[0].data;
+      return data[ctx.dataIndex] < data[ctx.dataIndex - 1] ? '#ff3b30' : accent;
+    };
+    chart.data.datasets[0].segment = { borderColor: ctx => ctx.p1.parsed.y < ctx.p0.parsed.y ? '#ff3b30' : accent };
+    chart.data.datasets[0].backgroundColor = settings.theme === 'light'
+      ? 'rgba(47,159,107,0.12)'
+      : 'rgba(142,207,176,0.10)';
+    chart.data.datasets[1].borderColor = settings.theme === 'light' ? '#b9b9b5' : '#252525';
+
+    chart.options.scales.x.ticks.color = textMuted;
+    chart.options.scales.y.ticks.color = textMuted;
+    chart.options.scales.x.grid.color = line;
+    chart.options.scales.y.grid.color = line;
+    chart.options.scales.x.border.color = line;
+    chart.options.scales.y.border.color = line;
+    chart.options.plugins.tooltip.backgroundColor = panel;
+    chart.options.plugins.tooltip.borderColor = line;
+    chart.update();
+  }
+}
+
+function doVibrate(){
+  if(settings.vibrate && navigator.vibrate){
+    navigator.vibrate(45);
+  }
+}
+
+document.addEventListener('click', function(e){
+  const panel = document.getElementById('settingsPanel');
+  const btn = document.querySelector('.settings-btn');
+  if(panel && btn && !panel.contains(e.target) && !btn.contains(e.target)){
+    panel.classList.remove('open');
+  }
+});
+
+
+
+
+const translations = {
+  en: {
+    projectName:'Project name', projectPlaceholder:'My Project', savingsGoal:'Savings goal (Kč)', goalPlaceholder:'My Target', setGoal:'Set goal',
+    savedSoFar:'Saved so far', goalWord:'Goal', reached:'reached', incoming:'incoming', outgoing:'outgoing',
+    incomingTitle:'Incoming', outgoingTitle:'Outgoing', description:'Description', totalSaved:'Total saved',
+    descriptionPlaceholder:'Description', amountPlaceholder:'Amount (Kč)', addButton:'+ Add', projectSwitcher:'Project',
+    settingsTitle:'Settings', vibrationLabel:'Vibration when adding an amount', vibrationNote:'Short phone vibration after every added transaction',
+    themeLabel:'Theme mode', themeNote:'Choose light or dark mode', darkMode:'Dark', lightMode:'Light',
+    languageLabel:'Language', languageNote:'Choose the app language',
+    storageTitle:'Where is my data stored?', storageNote:'Projects are saved only on this device and in this app. They are not sent to the internet.',
+    storagePath:'📱 This device → app storage', storageHelpButton:'How does it work?',
+    storageHelpText:'<strong>Simple version:</strong> the app remembers your projects directly inside your browser or desktop app.<br><br>If you open the same file on the same device, your data stays there. If you send the file to another computer, the data does not move automatically.<br><br>If you clear browser/app data, saved projects may be removed too.',
+    negativeNote:'Negative balance is visible below zero.', mood:'Mood',
+    newProjectPrompt:'New project name:', newProjectDefault:'New project', deleteLastProject:'You must keep at least one project.', deleteProjectConfirm:'Delete project'
+  },
+  cs: {
+    projectName:'Název projektu', projectPlaceholder:'Můj projekt', savingsGoal:'Cíl úspor (Kč)', goalPlaceholder:'Můj cíl', setGoal:'Nastavit cíl',
+    savedSoFar:'Naspořeno zatím', goalWord:'Cíl', reached:'dosaženo', incoming:'příjem', outgoing:'výdaj',
+    incomingTitle:'Příjem', outgoingTitle:'Výdaj', description:'Popis', totalSaved:'Celkem naspořeno',
+    descriptionPlaceholder:'Popis', amountPlaceholder:'Částka (Kč)', addButton:'+ Přidat', projectSwitcher:'Projekt',
+    settingsTitle:'Nastavení', vibrationLabel:'Vibrace při přidání částky', vibrationNote:'Krátká vibrace telefonu po každé přidané transakci',
+    themeLabel:'Režim vzhledu', themeNote:'Vyber světlý nebo tmavý mód', darkMode:'Tmavý', lightMode:'Světlý',
+    languageLabel:'Jazyk', languageNote:'Vyber jazyk aplikace',
+    storageTitle:'Kde jsou moje data?', storageNote:'Projekty se ukládají jen do tohoto zařízení a této aplikace. Neposílají se na internet.',
+    storagePath:'📱 Toto zařízení → paměť aplikace', storageHelpButton:'Jak to funguje?',
+    storageHelpText:'<strong>Jednoduše:</strong> aplikace si pamatuje tvoje projekty přímo v prohlížeči nebo desktopové aplikaci.<br><br>Když otevřeš stejný soubor na stejném zařízení, data zůstanou. Když soubor pošleš na jiný počítač, data se automaticky nepřenesou.<br><br>Když smažeš data prohlížeče nebo aplikace, můžou se smazat i uložené projekty.',
+    negativeNote:'Záporný zůstatek je vidět pod nulou.', mood:'Nálada',
+    newProjectPrompt:'Název nového projektu:', newProjectDefault:'Nový projekt', deleteLastProject:'Musíš mít alespoň jeden projekt.', deleteProjectConfirm:'Smazat projekt'
+  },
+  es: {
+    projectName:'Nombre del proyecto', projectPlaceholder:'Mi proyecto', savingsGoal:'Meta de ahorro (Kč)', goalPlaceholder:'Mi meta', setGoal:'Guardar meta',
+    savedSoFar:'Ahorrado hasta ahora', goalWord:'Meta', reached:'alcanzado', incoming:'ingreso', outgoing:'gasto',
+    incomingTitle:'Ingreso', outgoingTitle:'Gasto', description:'Descripción', totalSaved:'Total ahorrado',
+    descriptionPlaceholder:'Descripción', amountPlaceholder:'Cantidad (Kč)', addButton:'+ Añadir', projectSwitcher:'Proyecto',
+    settingsTitle:'Ajustes', vibrationLabel:'Vibración al añadir dinero', vibrationNote:'Vibración corta del teléfono después de cada transacción',
+    themeLabel:'Tema', themeNote:'Elige modo claro u oscuro', darkMode:'Oscuro', lightMode:'Claro',
+    languageLabel:'Idioma', languageNote:'Elige el idioma de la app',
+    storageTitle:'¿Dónde se guardan mis datos?', storageNote:'Los proyectos se guardan solo en este dispositivo y en esta app. No se envían a internet.',
+    storagePath:'📱 Este dispositivo → almacenamiento de la app', storageHelpButton:'¿Cómo funciona?',
+    storageHelpText:'<strong>Versión simple:</strong> la app recuerda tus proyectos dentro del navegador o la app de escritorio.<br><br>Si abres el mismo archivo en el mismo dispositivo, tus datos siguen ahí. Si envías el archivo a otro ordenador, los datos no se mueven automáticamente.<br><br>Si borras los datos del navegador o de la app, también se pueden borrar los proyectos guardados.',
+    negativeNote:'El saldo negativo aparece debajo de cero.', mood:'Estado',
+    newProjectPrompt:'Nombre del nuevo proyecto:', newProjectDefault:'Nuevo proyecto', deleteLastProject:'Debes mantener al menos un proyecto.', deleteProjectConfirm:'Eliminar proyecto'
+  }
+};
+
+function t(key){
+  const lang = (settings && settings.language) || 'en';
+  return (translations[lang] && translations[lang][key]) || translations.en[key] || key;
+}
+
+function applyLanguage(){
+  const lang = (settings && settings.language) || 'en';
+  document.documentElement.lang = lang;
+
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    el.textContent = t(key);
+  });
+
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+    const key = el.getAttribute('data-i18n-placeholder');
+    el.setAttribute('placeholder', t(key));
+  });
+
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+    const key = el.getAttribute('data-i18n-html');
+    el.innerHTML = t(key);
+  });
+
+  const languageSelect = document.getElementById('languageSelect');
+  if(languageSelect) languageSelect.value = lang;
+
+  document.body.classList.remove('lang-flash');
+  void document.body.offsetWidth;
+  document.body.classList.add('lang-flash');
+
+  updateDynamicLabels();
+}
+
+function updateDynamicLabels(){
+  const pctTop = document.getElementById('pctTop');
+  if(pctTop && GOAL <= 0) pctTop.textContent = t('mood');
+
+  const zeroLineNote = document.getElementById('zeroLineNote');
+  if(zeroLineNote) zeroLineNote.textContent = t('negativeNote');
+
+  if(chart){
+    chart.options.plugins.tooltip.callbacks.label = i => {
+      const label = i.dataset.label === 'Saved' ? t('savedSoFar') : t('goalWord');
+      return label + ': ' + Math.round(i.raw).toLocaleString('en-US') + ' Kč';
+    };
+    chart.update();
+  }
+}
+
+
+const pointGlowPlugin = {
+  id: 'pointGlow',
+  afterDatasetsDraw(chart){
+    const meta = chart.getDatasetMeta(0);
+    const data = chart.data.datasets[0].data || [];
+    const ctx = chart.ctx;
+
+    ctx.save();
+    meta.data.forEach((point, i)=>{
+      if(!point || i === 0) return;
+      const down = data[i] < data[i-1];
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, down ? 8 : 7, 0, Math.PI * 2);
+      ctx.fillStyle = down ? 'rgba(255,59,48,.22)' : 'rgba(142,207,176,.18)';
+      ctx.fill();
+    });
+    ctx.restore();
+  }
+};
+
+let GOAL = 0;
+let entries = [];
+let currentProjectId = 'default';
+let projects = {};
+let chart;
+
+
+function defaultProject(){
+  return {
+    name: 'My savings goal',
+    goal: 0,
+    entries: []
+  };
+}
+
+function loadProjects(){
+  try{
+    projects = JSON.parse(localStorage.getItem('savingsProjects') || '{}');
+  }catch(e){
+    projects = {};
+  }
+
+  if(!projects || typeof projects !== 'object') projects = {};
+  if(Object.keys(projects).length === 0){
+    projects.default = defaultProject();
+  }
+
+  currentProjectId = localStorage.getItem('currentProjectId') || Object.keys(projects)[0];
+  if(!projects[currentProjectId]) currentProjectId = Object.keys(projects)[0];
+
+  loadCurrentProject();
+  renderProjectSelect();
+}
+
+function saveProjects(){
+  projects[currentProjectId] = {
+    name: document.getElementById('projTitle').textContent || 'My savings goal',
+    goal: GOAL,
+    entries: entries
+  };
+  localStorage.setItem('savingsProjects', JSON.stringify(projects));
+  localStorage.setItem('currentProjectId', currentProjectId);
+  renderProjectSelect();
+}
+
+function loadCurrentProject(){
+  const p = projects[currentProjectId] || defaultProject();
+
+  GOAL = Number(p.goal) || 0;
+  entries = Array.isArray(p.entries) ? p.entries : [];
+
+  document.getElementById('projTitle').textContent = p.name || 'My savings goal';
+  document.getElementById('projInput').value = p.name || '';
+  document.getElementById('goalInput').value = GOAL ? String(GOAL) : String(GOAL);
+
+  if(chart){
+    chart.data.datasets[1].data = chart.data.labels.map(()=>GOAL);
+    const bounds = GOAL > 0 ? {min: 0, max: GOAL + Math.round(GOAL * 0.1)} : getChartBounds(chart.data.datasets[0].data || [0]);
+    chart.options.scales.y.min = bounds.min;
+    chart.options.scales.y.max = bounds.max;
+    chart.update();
+  }
+}
+
+function renderProjectSelect(){
+  const select = document.getElementById('projectSelect');
+  if(!select) return;
+
+  select.innerHTML = '';
+  Object.entries(projects).forEach(([id, p])=>{
+    const opt = document.createElement('option');
+    opt.value = id;
+    opt.textContent = p.name || 'Untitled project';
+    if(id === currentProjectId) opt.selected = true;
+    select.appendChild(opt);
+  });
+}
+
+function switchProject(id){
+  if(!projects[id] || id === currentProjectId) return;
+  saveProjects();
+  currentProjectId = id;
+  loadCurrentProject();
+  renderProjectSelect();
+  updateUI();
+  saveProjects();
+}
+
+function createProject(){
+  saveProjects();
+  const name = prompt(t('newProjectPrompt'), t('newProjectDefault'));
+  if(!name) return;
+
+  const id = 'project_' + Date.now();
+  projects[id] = {
+    name: name.trim() || t('newProjectDefault'),
+    goal: 0,
+    entries: []
+  };
+
+  currentProjectId = id;
+  loadCurrentProject();
+  saveProjects();
+  updateUI();
+}
+
+function deleteProject(){
+  const ids = Object.keys(projects);
+  if(ids.length <= 1){
+    alert(t('deleteLastProject'));
+    return;
+  }
+
+  const p = projects[currentProjectId];
+  if(!confirm(t('deleteProjectConfirm') + ' “' + (p.name || 'Untitled project') + '”?')) return;
+
+  delete projects[currentProjectId];
+  currentProjectId = Object.keys(projects)[0];
+  loadCurrentProject();
+  saveProjects();
+  updateUI();
+}
+
+function fmt(n){return Math.round(n).toLocaleString('en-US') + ' Kč';}
+
+// Only letters & spaces in desc
+document.getElementById('desc').addEventListener('input', function(){
+  this.value = this.value.replace(/[^a-zA-ZÁáČčĎďÉéĚěÍíŇňÓóŘřŠšŤťÚúŮůÝýŽž\s]/g,'');
+});
+// Only digits in amount fields
+document.getElementById('amount').addEventListener('input', function(){
+  this.value = this.value.replace(/[^0-9]/g,'');
+});
+document.getElementById('goalInput').addEventListener('input', function(){
+  this.value = this.value.replace(/[^0-9]/g,'');
+});
+
+function applySetup(){
+  const name = document.getElementById('projInput').value.trim();
+  const goalRaw = document.getElementById('goalInput').value.trim();
+
+  if(name) document.getElementById('projTitle').textContent = name;
+
+  // Empty field = keep current goal. "0" = valid goal and switches to emoji mode.
+  if(goalRaw !== ''){
+    GOAL = Number(goalRaw);
+    if(!Number.isFinite(GOAL) || GOAL < 0) GOAL = 0;
+
+    chart.data.datasets[1].data = chart.data.labels.map(()=>GOAL);
+    const bounds = GOAL > 0 ? {min: 0, max: GOAL + Math.round(GOAL * 0.1)} : getChartBounds(chart.data.datasets[0].data || [0]);
+    chart.options.scales.y.min = bounds.min;
+    chart.options.scales.y.max = bounds.max;
+    chart.update();
+  }
+
+  updateUI();
+}
+
+function initChart(){
+  const ctx = document.getElementById('chart').getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Start'],
+      datasets: [
+        {
+          label: 'Saved',
+          data: [0],
+          borderColor: '#8ecfb0',
+          segment: {
+            borderColor: ctx => ctx.p1.parsed.y < ctx.p0.parsed.y ? '#ff3b30' : '#8ecfb0'
+          },
+          backgroundColor: 'rgba(142,207,176,0.10)',
+          borderWidth: 2.5,
+          pointBackgroundColor: ctx => {
+            if(!ctx.chart.data.datasets[0].data || ctx.dataIndex === 0) return '#8ecfb0';
+            const data = ctx.chart.data.datasets[0].data;
+            return data[ctx.dataIndex] < data[ctx.dataIndex - 1] ? '#ff3b30' : '#8ecfb0';
+          },
+          pointBorderColor: ctx => {
+            if(!ctx.chart.data.datasets[0].data || ctx.dataIndex === 0) return '#0d0d0d';
+            const data = ctx.chart.data.datasets[0].data;
+            return data[ctx.dataIndex] < data[ctx.dataIndex - 1] ? '#ff3b30' : '#0d0d0d';
+          },
+          pointBorderWidth: 2,
+          pointRadius: 6,
+          spanGaps: false,
+          pointHoverRadius: 9,
+          fill: true,
+          tension: 0
+        },
+        {
+          label: 'Goal',
+          data: [GOAL],
+          borderColor: '#3a3a3a',
+          borderWidth: 1.5,
+          borderDash: [6,5],
+          pointRadius: 0,
+          fill: false,
+          tension: 0
+        }
+      ]
+    },
+    plugins: [pointGlowPlugin],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      devicePixelRatio: window.devicePixelRatio || 1,
+      animation: {duration: 500, easing: 'easeInOutQuart'},
+      plugins: {
+        legend: {display: false},
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          borderColor: '#333',
+          borderWidth: 1,
+          titleColor: '#888',
+          bodyColor: '#fff',
+          callbacks: {
+            label: i => i.dataset.label + ': ' + Math.round(i.raw).toLocaleString('en-US') + ' Kč'
+          }
+        }
+      },
+      scales: {
+        x: {ticks:{color:'#555',font:{size:11},maxRotation:30}, grid:{color: ctx => ctx.tick.value === 0 ? '#555' : '#181818'}, border:{color:'#222'}},
+        y: {
+          ticks:{color:'#555',font:{size:11},callback:v=>{
+            if(v>=1000) return Math.round(v/1000)+'k Kč';
+            return v+' Kč';
+          }},
+          grid:{color: ctx => ctx.tick.value === 0 ? '#555' : '#181818'},
+          border:{color:'#222'},
+          min: 0,
+          max: GOAL > 0 ? GOAL + Math.round(GOAL*0.1) : getChartMax([0])
+        }
+      }
+    }
+  });
+}
+
+
+function getChartBounds(values){
+  const highest = Math.max(0, ...values);
+  const lowest = Math.min(0, ...values);
+  const range = highest - lowest;
+  const pad = Math.max(20, range * 0.12);
+
+  let min = lowest < 0 ? lowest - pad : 0;
+  let max = highest > 0 ? highest + pad : 0;
+
+  if(max === 0 && min === 0) max = 100;
+
+  const size = Math.max(Math.abs(min), Math.abs(max), 100);
+  const pow = Math.pow(10, Math.floor(Math.log10(size)));
+  const step = pow / 2;
+
+  min = Math.floor(min / step) * step;
+  max = Math.ceil(max / step) * step;
+
+  return {min, max};
+}
+
+function getChartMax(values){
+  return getChartBounds(values).max;
+}
+
+function updateUI(){
+  let totalIn=0, totalOut=0, running=0;
+  const labels=['Start'], data=[0];
+  document.getElementById('rows').innerHTML='';
+
+  entries.forEach((e,i)=>{
+    if(e.type==='in'){totalIn+=e.amount; running+=e.amount;}
+    else{totalOut+=e.amount; running-=e.amount;}
+    labels.push(e.desc.length>12?e.desc.slice(0,11)+'…':e.desc);
+    data.push(running);
+
+    const div=document.createElement('div');
+    div.className='entry-row';
+    div.innerHTML=`<span class="e-desc" title="${e.desc}">${e.desc}</span>
+      <span class="${e.type==='in'?'e-in':'e-dash'}">${e.type==='in'?fmt(e.amount):'—'}</span>
+      <span class="${e.type==='out'?'e-out':'e-dash'}">${e.type==='out'?fmt(e.amount):'—'}</span>
+      <button class="e-del" onclick="deleteEntry(${i})" title="Remove">×</button>`;
+    document.getElementById('rows').appendChild(div);
+  });
+
+  const net=totalIn-totalOut;
+  const pct = GOAL > 0 ? Math.max(0, Math.min(100, Math.round((net/GOAL)*100))) : 0;
+
+  document.getElementById('bigNum').textContent=fmt(net);
+  document.getElementById('goalDisplay').textContent=fmt(GOAL);
+  if(GOAL>0){
+    document.getElementById('pctTop').textContent='%';
+    document.getElementById('pctVal').textContent=pct+'%';
+    document.getElementById('pctLabel').textContent=pct+'%';
+  }else{
+    let face='😐';
+    if(entries.length>0){
+      const prev = entries.length>1
+        ? entries.slice(0,-1).reduce((s,e)=>s+(e.type==='in'?e.amount:-e.amount),0)
+        : 0;
+      const now = totalIn-totalOut;
+      const diff = now - prev;
+
+      // Dynamic threshold: 20% of current/previous savings.
+      // Minimum 250 Kč keeps tiny changes from becoming "big".
+      const base = Math.max(Math.abs(prev), Math.abs(now), 1000);
+      const bigChange = Math.max(250, Math.round(base * 0.20));
+
+      if(diff >= bigChange) face='🤩';
+      else if(diff > 0) face='😊';
+      else if(diff === 0) face='😐';
+      else if(diff <= -bigChange) face='😭';
+      else face='😕';
+    }
+    document.getElementById('pctTop').textContent='Mood';
+    document.getElementById('pctVal').textContent=face;
+    document.getElementById('pctLabel').textContent=face;
+  }
+  document.getElementById('progBar').style.width=pct+'%';
+  document.getElementById('ioIn').textContent=fmt(totalIn);
+  document.getElementById('ioOut').textContent=fmt(totalOut);
+  document.getElementById('totalIn').textContent=fmt(totalIn);
+  document.getElementById('totalOut').textContent=fmt(totalOut);
+
+  chart.data.labels=labels;
+  chart.data.datasets[0].data=data;
+  chart.data.datasets[1].data=labels.map(()=>GOAL);
+  const bounds = GOAL > 0 ? {min: Math.min(0, ...data), max: GOAL + Math.round(GOAL*0.1)} : getChartBounds(data);
+  chart.options.scales.y.min = bounds.min;
+  chart.options.scales.y.max = bounds.max;
+chart.update();
+  if(typeof updateDynamicLabels === 'function') updateDynamicLabels();
+}
+
+function addEntry(){
+  const desc=document.getElementById('desc').value.trim();
+  const raw=document.getElementById('amount').value.trim();
+  const amount=parseInt(raw);
+  const type=document.getElementById('type').value;
+  if(!desc||!amount||amount<=0) return;
+  entries.push({desc,amount,type});
+  doVibrate();
+  document.getElementById('desc').value='';
+  document.getElementById('amount').value='';
+  document.getElementById('desc').focus();
+  updateUI();
+  saveProjects();
+}
+
+function deleteEntry(i){
+  entries.splice(i,1);
+  updateUI();
+  saveProjects();
+}
+
+document.getElementById('desc').addEventListener('keydown',e=>{if(e.key==='Enter') document.getElementById('amount').focus();});
+document.getElementById('amount').addEventListener('keydown',e=>{if(e.key==='Enter') addEntry();});
+
+initChart();
+loadSettings();
+loadProjects();
+updateUI();
+</script>
