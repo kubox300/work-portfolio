@@ -6,12 +6,7 @@
   <title>Kubiss | Graphic Designer</title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
     body {
       font-family: Arial, sans-serif;
@@ -37,6 +32,29 @@
     .hero {
       max-width: 900px;
       animation: fadeUp 1s ease forwards;
+    }
+
+    .hero-avatar, .avatar {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 25px;
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,0.15);
+      box-shadow: 0 0 60px rgba(123,44,255,0.5);
+    }
+
+    .hero-avatar {
+      margin-bottom: 35px;
+      transition: .35s;
+    }
+
+    .hero-avatar:hover {
+      transform: scale(1.05);
+      box-shadow:
+        0 0 60px rgba(123,44,255,.7),
+        0 0 120px rgba(0,212,255,.35);
     }
 
     .badge {
@@ -80,15 +98,8 @@
       transition: 0.3s;
     }
 
-    .btn.primary {
-      background: white;
-      color: #111;
-    }
-
-    .btn.secondary {
-      border: 1px solid rgba(255,255,255,0.25);
-      color: white;
-    }
+    .btn.primary { background: white; color: #111; }
+    .btn.secondary { border: 1px solid rgba(255,255,255,0.25); color: white; }
 
     .btn:hover {
       transform: translateY(-4px);
@@ -101,10 +112,7 @@
       padding: 90px 20px;
     }
 
-    h2 {
-      font-size: 44px;
-      margin-bottom: 25px;
-    }
+    h2 { font-size: 44px; margin-bottom: 25px; }
 
     .about {
       display: grid;
@@ -128,24 +136,7 @@
       line-height: 1.7;
     }
 
-    .profile-card {
-      text-align: center;
-    }
-
-    .avatar {
-      width: 170px;
-      height: 170px;
-      margin: auto;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #7b2cff, #00d4ff);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 58px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      box-shadow: 0 0 60px rgba(123,44,255,0.5);
-    }
+    .profile-card { text-align: center; }
 
     .skills {
       display: flex;
@@ -189,24 +180,13 @@
       display: block;
     }
 
-    .card-content {
-      padding: 24px;
-    }
-
-    .card-content h3 {
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
-
-    .card-content p {
-      color: #aaa;
-      line-height: 1.5;
-    }
+    .card-content { padding: 24px; }
+    .card-content h3 { font-size: 22px; margin-bottom: 10px; }
+    .card-content p { color: #aaa; line-height: 1.5; }
 
     .contact {
       text-align: center;
-      background:
-        radial-gradient(circle at center, rgba(120, 0, 255, 0.25), transparent 45%);
+      background: radial-gradient(circle at center, rgba(120, 0, 255, 0.25), transparent 45%);
     }
 
     .contact-box {
@@ -239,28 +219,14 @@
     }
 
     @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(35px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(35px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 800px) {
-      .about {
-        grid-template-columns: 1fr;
-      }
-
-      h1 {
-        letter-spacing: -2px;
-      }
-
-      .hero p {
-        font-size: 18px;
-      }
+      .about { grid-template-columns: 1fr; }
+      h1 { letter-spacing: -2px; }
+      .hero p { font-size: 18px; }
     }
   </style>
 </head>
@@ -269,6 +235,8 @@
 
 <header>
   <div class="hero">
+    <img src="IMG_20260303_153038_506.jpg" alt="Kubiss" class="hero-avatar">
+
     <div class="badge">Graphic Design Student • Photoshop • Branding</div>
     <h1>Kubiss</h1>
     <p>I create clean, modern and eye-catching visuals for brands, creators and creative projects.</p>
@@ -305,7 +273,7 @@
     </div>
 
     <div class="glass profile-card">
-      <div class="avatar">K</div>
+      <img src="IMG_20260303_153038_506.jpg" alt="Kubiss" class="avatar">
       <h2>Kubiss</h2>
       <p>Young creative designer building experience and helping people with visual design.</p>
     </div>
@@ -329,22 +297,6 @@
       <div class="card-content">
         <h3>Product Photo Editing</h3>
         <p>Clean product photo edit focused on presentation and detail.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="marshall product_2.jpg" alt="Marshall Product Mockup">
-      <div class="card-content">
-        <h3>Product Mockup</h3>
-        <p>Product placed into a realistic interior scene.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="photoedit.jpg" alt="Creative Photo Edit">
-      <div class="card-content">
-        <h3>Creative Photo Edit</h3>
-        <p>Photo manipulation and creative visual composition.</p>
       </div>
     </div>
   </div>
