@@ -32,19 +32,36 @@
       background: #060606;
     }
 
+    header::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 100%;
+      height: 280px;
+      background: linear-gradient(
+        to bottom,
+        rgba(6,6,6,0),
+        rgba(6,6,6,0.45),
+        #060606
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+
     .blob {
       position: absolute;
-      width: 420px;
-      height: 420px;
+      width: 430px;
+      height: 430px;
       border-radius: 50%;
-      filter: blur(90px);
+      filter: blur(100px);
       opacity: 0.6;
-      animation: moveBlob 9s infinite alternate ease-in-out;
+      animation: moveBlob 14s infinite alternate ease-in-out;
     }
 
     .green {
       background: #00ff88;
-      top: 10%;
+      top: 8%;
       left: 8%;
     }
 
@@ -52,30 +69,21 @@
       background: #ff004c;
       bottom: 8%;
       left: 35%;
-      animation-delay: 1.5s;
+      animation-delay: 2s;
     }
 
     .blue {
       background: #0077ff;
       top: 18%;
       right: 8%;
-      animation-delay: 3s;
-    }
-
-    @keyframes moveBlob {
-      from {
-        transform: translate(0, 0) scale(1);
-      }
-      to {
-        transform: translate(70px, -60px) scale(1.25);
-      }
+      animation-delay: 4s;
     }
 
     .hero {
       position: relative;
-      z-index: 2;
+      z-index: 5;
       max-width: 900px;
-      animation: fadeUp 1s ease forwards;
+      animation: fadeUp 1.4s ease forwards;
     }
 
     .hero-avatar {
@@ -88,7 +96,8 @@
       border: 4px solid rgba(255,255,255,0.25);
       box-shadow:
         0 0 50px rgba(0,255,136,0.35),
-        0 0 80px rgba(0,119,255,0.25);
+        0 0 90px rgba(0,119,255,0.25);
+      animation: float 5s ease-in-out infinite;
     }
 
     .badge {
@@ -130,7 +139,7 @@
       border-radius: 50px;
       text-decoration: none;
       font-weight: bold;
-      transition: 0.3s;
+      transition: 0.4s;
     }
 
     .primary {
@@ -145,14 +154,19 @@
     }
 
     .btn:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 50px rgba(255,255,255,0.18);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 55px rgba(255,255,255,0.2);
     }
 
     section {
       max-width: 1200px;
       margin: auto;
-      padding: 90px 20px;
+      padding: 120px 20px;
+      opacity: 0;
+      transform: translateY(80px);
+      animation: showSection 1.2s ease forwards;
+      animation-timeline: view();
+      animation-range: entry 10% cover 35%;
     }
 
     h2 {
@@ -174,6 +188,14 @@
       padding: 35px;
       backdrop-filter: blur(14px);
       box-shadow: 0 25px 70px rgba(0,0,0,0.35);
+      transition: 0.45s ease;
+    }
+
+    .glass:hover {
+      transform: translateY(-8px);
+      box-shadow:
+        0 0 35px rgba(0,255,136,0.12),
+        0 0 80px rgba(0,119,255,0.14);
     }
 
     p {
@@ -195,6 +217,12 @@
       background: rgba(255,255,255,0.09);
       border: 1px solid rgba(255,255,255,0.14);
       color: #eee;
+      transition: 0.35s;
+    }
+
+    .skills span:hover {
+      transform: translateY(-4px);
+      background: rgba(255,255,255,0.16);
     }
 
     .profile-card {
@@ -223,14 +251,14 @@
       border-radius: 28px;
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.12);
-      transition: 0.35s;
+      transition: 0.45s ease;
     }
 
     .card:hover {
-      transform: translateY(-10px) scale(1.02);
+      transform: translateY(-14px) scale(1.03);
       box-shadow:
-        0 25px 70px rgba(0,255,136,0.12),
-        0 25px 90px rgba(0,119,255,0.18);
+        0 0 35px rgba(0,255,136,.16),
+        0 0 90px rgba(0,119,255,.18);
     }
 
     .card img {
@@ -290,14 +318,63 @@
       border-top: 1px solid rgba(255,255,255,0.08);
     }
 
+    @keyframes moveBlob {
+      0% {
+        transform: translate(0, 0) scale(1);
+      }
+
+      25% {
+        transform: translate(90px, -60px) scale(1.2);
+      }
+
+      50% {
+        transform: translate(-50px, 80px) scale(0.95);
+      }
+
+      75% {
+        transform: translate(70px, 50px) scale(1.3);
+      }
+
+      100% {
+        transform: translate(-40px, -35px) scale(1);
+      }
+    }
+
     @keyframes fadeUp {
       from {
         opacity: 0;
-        transform: translateY(35px);
+        transform: translateY(45px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
+      }
+    }
+
+    @keyframes showSection {
+      from {
+        opacity: 0;
+        transform: translateY(80px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+
+      100% {
+        transform: translateY(0px);
       }
     }
 
@@ -331,9 +408,12 @@
   <div class="hero">
     <img src="IMG_20260303_153038_506.jpg" alt="Kubiss" class="hero-avatar">
 
-    <div class="badge">Graphic Design Student • Photoshop • Branding</div>
+    <div class="badge">Graphic Designer • Photoshop • Branding • Web Design</div>
     <h1>Kubiss</h1>
-    <p>I create clean, modern and eye-catching visuals for brands, creators and creative projects.</p>
+    <p>
+      Graphic Designer focused on logos, branding, posters, photo editing and modern websites.
+      Creating visuals that help brands stand out.
+    </p>
 
     <div class="buttons">
       <a href="#portfolio" class="btn primary">View Portfolio</a>
@@ -347,10 +427,10 @@
     <div class="glass">
       <h2>About Me</h2>
       <p>
-        Hi! I'm Kubiss, a graphic design student focused on creating modern,
-        creative and eye-catching visuals. I mainly work in Photoshop and create
-        logos, posters, flyers, photo edits and simple branding designs.
-        I also have basic experience with Blender, video editing and simple websites.
+        Hi, I'm Kubiss — a passionate graphic designer who enjoys creating modern visuals with a clean and professional style.
+        I specialize in logo design, branding, posters, flyers and photo editing using Adobe Photoshop.
+        I also design modern websites and have basic experience with Blender and video editing.
+        I'm always learning new skills and looking for exciting projects where I can help bring ideas to life.
       </p>
 
       <div class="skills">
@@ -361,7 +441,7 @@
         <span>Flyers</span>
         <span>Branding</span>
         <span>Photoshop</span>
-        <span>Simple Websites</span>
+        <span>Web Design</span>
         <span>Blender Basic</span>
         <span>Video Editing Basic</span>
       </div>
@@ -370,7 +450,7 @@
     <div class="glass profile-card">
       <img src="IMG_20260303_153038_506.jpg" alt="Kubiss">
       <h2>Kubiss</h2>
-      <p>Young creative designer building experience and helping people with visual design.</p>
+      <p>Graphic Designer • Photoshop • Branding • Web Design</p>
     </div>
   </div>
 </section>
@@ -417,8 +497,9 @@
   <div class="contact-box">
     <h2>Let's Work Together</h2>
     <p>
-      Need a logo, poster, branding, photo edit or creative graphic design?
-      Feel free to contact me.
+      Looking for a designer?
+      I can help with logos, branding, posters, photo editing and modern websites.
+      Let's create something amazing together.
     </p>
 
     <br>
