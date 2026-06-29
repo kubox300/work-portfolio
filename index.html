@@ -142,12 +142,12 @@
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 25px;
-    }
-
-    .skills span {
-      padding: 12px 18px;
-      border-radius: 50px;
+     .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      margin-top: 35px;
+}
       background: rgba(255,255,255,0.08);
       border: 1px solid rgba(255,255,255,0.12);
       color: #e5e5e5;
@@ -162,12 +162,17 @@
 
     .card {
       background: #121212;
-      border-radius: 26px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.1);
-      transition: 0.35s;
-    }
-
+   .card img {
+      width: 100%;
+      height: 270px;
+      object-fit: cover;
+      display: block;
+      background: #111;
+}.logo-img {
+      object-fit: contain !important;
+      padding: 20px;
+      background: #050505;
+}
     .card:hover {
       transform: translateY(-10px);
       box-shadow: 0 25px 70px rgba(120,0,255,0.25);
@@ -216,7 +221,9 @@
       padding: 35px;
       color: #777;
       border-top: 1px solid rgba(255,255,255,0.08);
-    }
+    }.portfolio-grid {
+    grid-template-columns: 1fr;
+}
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(35px); }
@@ -272,7 +279,7 @@
       </div>
     </div>
 <section id="portfolio">
-  <h2>Selected Work</h2>
+<img src="LOGO_BIATRO_ILUSTRATOR.png" alt="Bistro Logo" class="logo-img">
 
   <div class="portfolio-grid">
     <div class="card">
