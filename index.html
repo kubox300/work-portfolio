@@ -3,517 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kubiss | Graphic Designer</title>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #060606;
-      color: white;
-      overflow-x: hidden;
-    }
-
-    header {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 40px 20px;
-      position: relative;
-      overflow: hidden;
-      background: #060606;
-    }
-
-    header::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -1px;
-      width: 100%;
-      height: 280px;
-      background: linear-gradient(
-        to bottom,
-        rgba(6,6,6,0),
-        rgba(6,6,6,0.45),
-        #060606
-      );
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .blob {
-      position: absolute;
-      width: 430px;
-      height: 430px;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.6;
-      animation: moveBlob 14s infinite alternate ease-in-out;
-    }
-
-    .green {
-      background: #00ff88;
-      top: 8%;
-      left: 8%;
-    }
-
-    .red {
-      background: #ff004c;
-      bottom: 8%;
-      left: 35%;
-      animation-delay: 2s;
-    }
-
-    .blue {
-      background: #0077ff;
-      top: 18%;
-      right: 8%;
-      animation-delay: 4s;
-    }
-
-    .hero {
-      position: relative;
-      z-index: 5;
-      max-width: 900px;
-      animation: fadeUp 1.4s ease forwards;
-    }
-
-    .hero-avatar {
-      width: 180px;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 50%;
-      display: block;
-      margin: 0 auto 30px;
-      border: 4px solid rgba(255,255,255,0.25);
-      box-shadow:
-        0 0 50px rgba(0,255,136,0.35),
-        0 0 90px rgba(0,119,255,0.25);
-      animation: float 5s ease-in-out infinite;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 10px 18px;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 50px;
-      color: #ddd;
-      margin-bottom: 25px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(12px);
-    }
-
-    h1 {
-      font-size: clamp(70px, 13vw, 150px);
-      letter-spacing: -6px;
-      margin-bottom: 20px;
-      background: linear-gradient(90deg, #ffffff, #00ff88, #0077ff, #ff004c);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      font-size: 22px;
-      color: #d1d1d1;
-      margin-bottom: 35px;
-      line-height: 1.6;
-    }
-
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      padding: 15px 32px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.4s;
-    }
-
-    .primary {
-      background: white;
-      color: #111;
-    }
-
-    .secondary {
-      border: 1px solid rgba(255,255,255,0.3);
-      color: white;
-      background: rgba(255,255,255,0.05);
-    }
-
-    .btn:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 55px rgba(255,255,255,0.2);
-    }
-
-    section {
-      max-width: 1200px;
-      margin: auto;
-      padding: 120px 20px;
-      opacity: 0;
-      transform: translateY(80px);
-      animation: showSection 1.2s ease forwards;
-      animation-timeline: view();
-      animation-range: entry 10% cover 35%;
-    }
-
-    h2 {
-      font-size: 44px;
-      margin-bottom: 25px;
-    }
-
-    .about {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 35px;
-      align-items: center;
-    }
-
-    .glass {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 30px;
-      padding: 35px;
-      backdrop-filter: blur(14px);
-      box-shadow: 0 25px 70px rgba(0,0,0,0.35);
-      transition: 0.45s ease;
-    }
-
-    .glass:hover {
-      transform: translateY(-8px);
-      box-shadow:
-        0 0 35px rgba(0,255,136,0.12),
-        0 0 80px rgba(0,119,255,0.14);
-    }
-
-    p {
-      color: #cfcfcf;
-      font-size: 18px;
-      line-height: 1.7;
-    }
-
-    .skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 28px;
-    }
-
-    .skills span {
-      padding: 12px 18px;
-      border-radius: 50px;
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.14);
-      color: #eee;
-      transition: 0.35s;
-    }
-
-    .skills span:hover {
-      transform: translateY(-4px);
-      background: rgba(255,255,255,0.16);
-    }
-
-    .profile-card {
-      text-align: center;
-    }
-
-    .profile-card img {
-      width: 170px;
-      height: 170px;
-      object-fit: cover;
-      border-radius: 50%;
-      border: 4px solid rgba(255,255,255,0.18);
-      margin-bottom: 20px;
-      box-shadow: 0 0 55px rgba(0,119,255,0.35);
-    }
-
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 28px;
-      margin-top: 35px;
-    }
-
-    .card {
-      background: #121212;
-      border-radius: 28px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.12);
-      transition: 0.45s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-14px) scale(1.03);
-      box-shadow:
-        0 0 35px rgba(0,255,136,.16),
-        0 0 90px rgba(0,119,255,.18);
-    }
-
-    .card img {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-      display: block;
-      background: #070707;
-    }
-
-    .card img.logo-img {
-      object-fit: contain;
-      padding: 25px;
-    }
-
-    .card-content {
-      padding: 24px;
-    }
-
-    .card-content h3 {
-      font-size: 23px;
-      margin-bottom: 10px;
-    }
-
-    .card-content p {
-      color: #aaa;
-      font-size: 16px;
-    }
-
-    .contact {
-      text-align: center;
-      background:
-        radial-gradient(circle at center, rgba(0,255,136,0.12), transparent 40%),
-        radial-gradient(circle at 70% 40%, rgba(0,119,255,0.12), transparent 40%);
-    }
-
-    .contact-box {
-      max-width: 820px;
-      margin: auto;
-      padding: 60px 30px;
-      border-radius: 35px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.16);
-      backdrop-filter: blur(16px);
-    }
-
-    .discord {
-      margin-top: 25px;
-      font-size: 20px;
-      color: white;
-    }
-
-    footer {
-      text-align: center;
-      padding: 35px;
-      color: #777;
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-
-    @keyframes moveBlob {
-      0% {
-        transform: translate(0, 0) scale(1);
-      }
-
-      25% {
-        transform: translate(90px, -60px) scale(1.2);
-      }
-
-      50% {
-        transform: translate(-50px, 80px) scale(0.95);
-      }
-
-      75% {
-        transform: translate(70px, 50px) scale(1.3);
-      }
-
-      100% {
-        transform: translate(-40px, -35px) scale(1);
-      }
-    }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(45px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes showSection {
-      from {
-        opacity: 0;
-        transform: translateY(80px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0px);
-      }
-
-      50% {
-        transform: translateY(-12px);
-      }
-
-      100% {
-        transform: translateY(0px);
-      }
-    }
-
-    @media (max-width: 800px) {
-      .about {
-        grid-template-columns: 1fr;
-      }
-
-      .portfolio-grid {
-        grid-template-columns: 1fr;
-      }
-
-      h1 {
-        letter-spacing: -2px;
-      }
-
-      .hero p {
-        font-size: 18px;
-      }
-    }
-  </style>
+  <title>Kubiss | Creative Designer</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
+<div class="bg">
+  <div class="orb green"></div>
+  <div class="orb blue"></div>
+  <div class="orb red"></div>
+</div>
+
+<nav>
+  <div class="logo">Kubiss</div>
+  <div class="links">
+    <a href="#about">About</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
 <header>
-  <div class="blob green"></div>
-  <div class="blob red"></div>
-  <div class="blob blue"></div>
-
-  <div class="hero">
-    <img src="IMG_20260303_153038_506.jpg" alt="Kubiss" class="hero-avatar">
-
-    <div class="badge">Graphic Designer • Photoshop • Branding • Web Design</div>
-    <h1>Kubiss</h1>
-    <p>
-      Graphic Designer focused on logos, branding, posters, photo editing and modern websites.
-      Creating visuals that help brands stand out.
-    </p>
-
-    <div class="buttons">
-      <a href="#portfolio" class="btn primary">View Portfolio</a>
-      <a href="#contact" class="btn secondary">Contact Me</a>
-    </div>
+  <img src="IMG_20260303_153038_506.jpg" class="avatar" alt="Kubiss">
+  <p class="badge">Graphic Designer • Photoshop • Branding • Web Design</p>
+  <h1>Kubiss</h1>
+  <p class="hero-text">I create logos, branding, posters, photo edits and modern websites.</p>
+  <div class="buttons">
+    <a href="#portfolio" class="btn primary">View Portfolio</a>
+    <a href="#contact" class="btn secondary">Contact Me</a>
   </div>
 </header>
 
-<section>
-  <div class="about">
-    <div class="glass">
-      <h2>About Me</h2>
-      <p>
-        Hi, I'm Kubiss — a passionate graphic designer who enjoys creating modern visuals with a clean and professional style.
-        I specialize in logo design, branding, posters, flyers and photo editing using Adobe Photoshop.
-        I also design modern websites and have basic experience with Blender and video editing.
-        I'm always learning new skills and looking for exciting projects where I can help bring ideas to life.
-      </p>
+<section id="about" class="reveal">
+  <h2>About Me</h2>
+  <div class="glass">
+    <p>
+      Hi, I'm Kubiss. I'm studying graphic design and improving my skills every day.
+      I mainly work in Photoshop, creating logos, branding, posters and photo edits.
+      I also enjoy creating websites and learning Blender and video editing.
+    </p>
 
-      <div class="skills">
-        <span>Graphic Design</span>
-        <span>Logo Design</span>
-        <span>Photo Editing</span>
-        <span>Posters</span>
-        <span>Flyers</span>
-        <span>Branding</span>
-        <span>Photoshop</span>
-        <span>Web Design</span>
-        <span>Blender Basic</span>
-        <span>Video Editing Basic</span>
-      </div>
-    </div>
-
-    <div class="glass profile-card">
-      <img src="IMG_20260303_153038_506.jpg" alt="Kubiss">
-      <h2>Kubiss</h2>
-      <p>Graphic Designer • Photoshop • Branding • Web Design</p>
+    <div class="skills">
+      <span>Photoshop</span>
+      <span>Logo Design</span>
+      <span>Branding</span>
+      <span>Photo Editing</span>
+      <span>Posters</span>
+      <span>Web Design</span>
+      <span>Blender</span>
+      <span>Video Editing</span>
     </div>
   </div>
 </section>
 
-<section id="portfolio">
+<section id="portfolio" class="reveal">
   <h2>Selected Work</h2>
 
-  <div class="portfolio-grid">
+  <div class="grid">
     <div class="card">
-      <img src="LOGO_BIATRO_ILUSTRATOR.png" alt="Bistro Logo Design" class="logo-img">
-      <div class="card-content">
-        <h3>Bistro Logo Design</h3>
-        <p>Logo concept for a restaurant or bistro brand.</p>
-      </div>
+      <img src="LOGO_BIATRO_ILUSTRATOR.png" class="logo-img" alt="Bistro Logo">
+      <h3>Bistro Logo Design</h3>
+      <p>Logo concept for a restaurant or bistro brand.</p>
     </div>
 
     <div class="card">
-      <img src="marshall product .jpg" alt="Marshall Product Photo">
-      <div class="card-content">
-        <h3>Product Photo Editing</h3>
-        <p>Clean product photo edit focused on presentation and detail.</p>
-      </div>
+      <img src="marshall product .jpg" alt="Marshall Product">
+      <h3>Product Photo Editing</h3>
+      <p>Product photo edit focused on presentation and detail.</p>
     </div>
 
     <div class="card">
-      <img src="marshall product_2.jpg" alt="Marshall Product Mockup">
-      <div class="card-content">
-        <h3>Product Mockup</h3>
-        <p>Product placed into a realistic interior scene.</p>
-      </div>
+      <img src="marshall product_2.jpg" alt="Marshall Mockup">
+      <h3>Product Mockup</h3>
+      <p>Product placed into a realistic interior scene.</p>
     </div>
 
     <div class="card">
       <img src="photoedit.jpg" alt="Creative Photo Edit">
-      <div class="card-content">
-        <h3>Creative Photo Edit</h3>
-        <p>Photo manipulation and creative visual composition.</p>
-      </div>
+      <h3>Creative Photo Edit</h3>
+      <p>Photo manipulation and creative visual composition.</p>
+    </div>
+
+    <div class="card">
+      <img src="home.png" alt="Home Visualization">
+      <h3>Modern Home Visualization</h3>
+      <p>Architecture-style visual focused on light and atmosphere.</p>
+    </div>
+
+    <div class="card">
+      <img src="castle.png" alt="Fantasy Castle">
+      <h3>Fantasy Castle</h3>
+      <p>Fantasy environment with cinematic atmosphere.</p>
     </div>
   </div>
 </section>
 
-<section id="contact" class="contact">
-  <div class="contact-box">
+<section id="contact" class="reveal contact">
+  <div class="glass">
     <h2>Let's Work Together</h2>
-    <p>
-      Looking for a designer?
-      I can help with logos, branding, posters, photo editing and modern websites.
-      Let's create something amazing together.
-    </p>
-
-    <br>
-    <a class="btn primary" href="mailto:nawairjou@gmail.com">Email Me</a>
-
-    <div class="discord">
-      Discord: <strong>mrkubiss_23</strong>
-    </div>
+    <p>Need a logo, poster, branding, photo edit or website? Contact me.</p>
+    <a href="mailto:nawairjou@gmail.com" class="btn primary">Email Me</a>
+    <p class="discord">Discord: <strong>mrkubiss_23</strong></p>
   </div>
 </section>
+
+<div class="lightbox" id="lightbox">
+  <span id="close">&times;</span>
+  <img id="lightbox-img" src="" alt="">
+</div>
 
 <footer>
   © 2026 Kubiss. All rights reserved.
 </footer>
 
+<script src="script.js"></script>
 </body>
 </html>
