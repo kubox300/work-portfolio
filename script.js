@@ -1,15 +1,3 @@
-const cursor = document.querySelector('.cursor-dot');
-if (cursor) {
-  window.addEventListener('mousemove', (e) => {
-    cursor.style.left = `${e.clientX}px`;
-    cursor.style.top = `${e.clientY}px`;
-  });
-  document.querySelectorAll('a, button, .card').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
-  });
-}
-
 const reveals = document.querySelectorAll('.reveal');
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -39,7 +27,7 @@ if (roleText) {
     roleText.offsetHeight;
     roleText.textContent = roles[roleIndex];
     roleText.style.animation = 'roleSwap .65s ease';
-  }, 2600);
+  }, 3600);
 }
 
 const tooltip = document.getElementById('skillTooltip');
