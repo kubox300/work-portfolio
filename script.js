@@ -44,58 +44,11 @@ if (roleSwitch) {
   // This prevents the hero from feeling like it loads in two separate parts.
   setTimeout(() => {
     changeRole();
-    setInterval(changeRole, 3400);
-  }, 1800);
+    setInterval(changeRole, 2300);
+  }, 1100);
 }
 
-const tooltip = document.getElementById('skillTooltip');
-const tooltipTitle = tooltip?.querySelector('h3');
-const tooltipDesc = tooltip?.querySelector('p');
-
-function placeTooltipUnderPill(pill) {
-  if (!tooltip) return;
-  const rect = pill.getBoundingClientRect();
-  const gap = 14;
-  const tooltipRect = tooltip.getBoundingClientRect();
-  let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
-  let top = rect.bottom + gap;
-
-  if (left < 12) left = 12;
-  if (left + tooltipRect.width > window.innerWidth - 12) {
-    left = window.innerWidth - tooltipRect.width - 12;
-  }
-
-  if (top + tooltipRect.height > window.innerHeight - 12) {
-    top = rect.top - tooltipRect.height - gap;
-  }
-
-  tooltip.style.left = `${left}px`;
-  tooltip.style.top = `${top}px`;
-}
-
-if (tooltip) {
-  document.querySelectorAll('.skill-pill').forEach(pill => {
-    pill.addEventListener('mouseenter', () => {
-      tooltipTitle.textContent = pill.dataset.title;
-      tooltipDesc.textContent = pill.dataset.desc;
-      tooltip.classList.add('active');
-      requestAnimationFrame(() => placeTooltipUnderPill(pill));
-    });
-
-    pill.addEventListener('focus', () => {
-      tooltipTitle.textContent = pill.dataset.title;
-      tooltipDesc.textContent = pill.dataset.desc;
-      tooltip.classList.add('active');
-      requestAnimationFrame(() => placeTooltipUnderPill(pill));
-    });
-
-    pill.addEventListener('mouseleave', () => tooltip.classList.remove('active'));
-    pill.addEventListener('blur', () => tooltip.classList.remove('active'));
-  });
-
-  window.addEventListener('scroll', () => tooltip.classList.remove('active'));
-  window.addEventListener('resize', () => tooltip.classList.remove('active'));
-}
+// Skill tooltip is handled with CSS so it always stays attached to the hovered pill.
 
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
