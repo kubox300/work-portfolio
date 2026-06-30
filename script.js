@@ -1,82 +1,93 @@
-const reveals = document.querySelectorAll('.reveal');
-
-function revealOnScroll() {
-  reveals.forEach((el) => {
-    const top = el.getBoundingClientRect().top;
-    if (top < window.innerHeight - 120) {
-      el.classList.add('active');
-    }
+const cursor = document.querySelector('.cursor-dot');
+if (cursor) {
+  window.addEventListener('mousemove', (e) => {
+    cursor.style.left = `${e.clientX}px`;
+    cursor.style.top = `${e.clientY}px`;
+  });
+  document.querySelectorAll('a, button, .card').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
   });
 }
 
-window.addEventListener('scroll', revealOnScroll);
-revealOnScroll();
+const reveals = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('active');
+  });
+}, { threshold: 0.12 });
+reveals.forEach(el => revealObserver.observe(el));
 
-const cursorGlow = document.querySelector('.cursor-glow');
-
-window.addEventListener('pointermove', (event) => {
-  if (!cursorGlow) return;
-  cursorGlow.style.left = `${event.clientX}px`;
-  cursorGlow.style.top = `${event.clientY}px`;
-});
-
-const roles = [
-  'Graphic Designer',
-  'Logo Designer',
-  'Photo Editor',
-  'Web Designer',
-  'Brand Designer',
-  'Creative Designer'
+const quotes = [
+  'Design is thinking made visual.',
+  'Less noise, more meaning.',
+  'Create with purpose.',
+  'Good design feels effortless.',
+  'Details make the difference.',
+  'Clean visuals. Clear message.'
 ];
+const navQuote = document.getElementById('navQuote');
+if (navQuote) navQuote.textContent = quotes[Math.floor(Math.random() * quotes.length)];
 
-const roleSwitch = document.getElementById('roleSwitch');
+const roles = ['Graphic Designer', 'Logo Designer', 'Photo Editor', 'Web Designer', 'Brand Designer', 'Creative Designer'];
+const roleText = document.getElementById('roleText');
 let roleIndex = 0;
-
-function changeRole() {
-  if (!roleSwitch) return;
-  roleIndex = (roleIndex + 1) % roles.length;
-  roleSwitch.classList.remove('change');
-  void roleSwitch.offsetWidth;
-  roleSwitch.textContent = roles[roleIndex];
-  roleSwitch.classList.add('change');
+if (roleText) {
+  setInterval(() => {
+    roleIndex = (roleIndex + 1) % roles.length;
+    roleText.style.animation = 'none';
+    roleText.offsetHeight;
+    roleText.textContent = roles[roleIndex];
+    roleText.style.animation = 'roleSwap .65s ease';
+  }, 2600);
 }
 
-setInterval(changeRole, 1800);
+const tooltip = document.getElementById('skillTooltip');
+const tooltipTitle = tooltip?.querySelector('h3');
+const tooltipDesc = tooltip?.querySelector('p');
+if (tooltip) {
+  document.querySelectorAll('.skill-pill').forEach(pill => {
+    pill.addEventListener('mouseenter', () => {
+      tooltipTitle.textContent = pill.dataset.title;
+      tooltipDesc.textContent = pill.dataset.desc;
+      tooltip.classList.add('active');
+    });
+    pill.addEventListener('mousemove', (e) => {
+      const pad = 18;
+      let x = e.clientX + pad;
+      let y = e.clientY + pad;
+      const rect = tooltip.getBoundingClientRect();
+      if (x + rect.width > window.innerWidth - 12) x = e.clientX - rect.width - pad;
+      if (y + rect.height > window.innerHeight - 12) y = e.clientY - rect.height - pad;
+      tooltip.style.left = `${x}px`;
+      tooltip.style.top = `${y}px`;
+    });
+    pill.addEventListener('mouseleave', () => tooltip.classList.remove('active'));
+  });
+}
 
 const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 const lightboxTitle = document.getElementById('lightbox-title');
+const lightboxTools = document.getElementById('lightbox-tools');
 const closeBtn = document.getElementById('close');
 
-function closeLightbox() {
-  if (!lightbox) return;
-  lightbox.classList.remove('active');
-  lightbox.setAttribute('aria-hidden', 'true');
-}
-
-document.querySelectorAll('.card').forEach((card) => {
-  const img = card.querySelector('img');
-  if (!img) return;
-
+document.querySelectorAll('.card').forEach(card => {
   card.addEventListener('click', () => {
+    const img = card.querySelector('img');
     lightboxImg.src = img.src;
-    lightboxImg.alt = img.alt || '';
-    lightboxTitle.textContent = card.dataset.title || img.alt || '';
+    lightboxImg.alt = img.alt;
+    lightboxTitle.textContent = card.dataset.project || card.querySelector('h3')?.textContent || '';
+    lightboxTools.textContent = card.dataset.tools || '';
     lightbox.classList.add('active');
     lightbox.setAttribute('aria-hidden', 'false');
   });
 });
 
-if (closeBtn) {
-  closeBtn.addEventListener('click', closeLightbox);
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  lightbox.setAttribute('aria-hidden', 'true');
 }
-
-if (lightbox) {
-  lightbox.addEventListener('click', (event) => {
-    if (event.target === lightbox) closeLightbox();
-  });
-}
-
-window.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') closeLightbox();
-});
+if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+if (lightbox) lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
