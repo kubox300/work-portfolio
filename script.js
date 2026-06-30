@@ -17,17 +17,29 @@ const quotes = [
 const navQuote = document.getElementById('navQuote');
 if (navQuote) navQuote.textContent = quotes[Math.floor(Math.random() * quotes.length)];
 
-const roles = ['Graphic Designer', 'Logo Designer', 'Photo Editor', 'Web Designer', 'Brand Designer', 'Creative Designer'];
-const roleText = document.getElementById('roleText');
+const roles = [
+  'Graphic Designer',
+  'Logo Designer',
+  'Photo Editor',
+  'Web Designer',
+  'Brand Designer',
+  'Creative Designer'
+];
+
+const roleSwitch = document.getElementById('roleSwitch');
 let roleIndex = 0;
-if (roleText) {
-  setInterval(() => {
-    roleIndex = (roleIndex + 1) % roles.length;
-    roleText.style.animation = 'none';
-    roleText.offsetHeight;
-    roleText.textContent = roles[roleIndex];
-    roleText.style.animation = 'roleSwap .65s ease';
-  }, 3600);
+
+function changeRole() {
+  if (!roleSwitch) return;
+  roleIndex = (roleIndex + 1) % roles.length;
+  roleSwitch.classList.remove('change');
+  void roleSwitch.offsetWidth;
+  roleSwitch.textContent = roles[roleIndex];
+  roleSwitch.classList.add('change');
+}
+
+if (roleSwitch) {
+  setInterval(changeRole, 3300);
 }
 
 const tooltip = document.getElementById('skillTooltip');
