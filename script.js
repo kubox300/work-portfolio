@@ -1,78 +1,82 @@
-const reveals = document.querySelectorAll(".reveal");
+const reveals = document.querySelectorAll('.reveal');
 
 function revealOnScroll() {
   reveals.forEach((el) => {
     const top = el.getBoundingClientRect().top;
     if (top < window.innerHeight - 120) {
-      el.classList.add("active");
+      el.classList.add('active');
     }
   });
 }
 
-window.addEventListener("scroll", revealOnScroll);
+window.addEventListener('scroll', revealOnScroll);
 revealOnScroll();
 
-const lightbox = document.getElementById("lightbox");
-const lightboxImg = document.getElementById("lightbox-img");
-const closeBtn = document.getElementById("close");
+const cursorGlow = document.querySelector('.cursor-glow');
 
-document.querySelectorAll(".card img").forEach((img) => {
-  img.addEventListener("click", () => {
+window.addEventListener('pointermove', (event) => {
+  if (!cursorGlow) return;
+  cursorGlow.style.left = `${event.clientX}px`;
+  cursorGlow.style.top = `${event.clientY}px`;
+});
+
+const roles = [
+  'Graphic Designer',
+  'Logo Designer',
+  'Photo Editor',
+  'Web Designer',
+  'Brand Designer',
+  'Creative Designer'
+];
+
+const roleSwitch = document.getElementById('roleSwitch');
+let roleIndex = 0;
+
+function changeRole() {
+  if (!roleSwitch) return;
+  roleIndex = (roleIndex + 1) % roles.length;
+  roleSwitch.classList.remove('change');
+  void roleSwitch.offsetWidth;
+  roleSwitch.textContent = roles[roleIndex];
+  roleSwitch.classList.add('change');
+}
+
+setInterval(changeRole, 1800);
+
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxTitle = document.getElementById('lightbox-title');
+const closeBtn = document.getElementById('close');
+
+function closeLightbox() {
+  if (!lightbox) return;
+  lightbox.classList.remove('active');
+  lightbox.setAttribute('aria-hidden', 'true');
+}
+
+document.querySelectorAll('.card').forEach((card) => {
+  const img = card.querySelector('img');
+  if (!img) return;
+
+  card.addEventListener('click', () => {
     lightboxImg.src = img.src;
-    lightbox.classList.add("active");
+    lightboxImg.alt = img.alt || '';
+    lightboxTitle.textContent = card.dataset.title || img.alt || '';
+    lightbox.classList.add('active');
+    lightbox.setAttribute('aria-hidden', 'false');
   });
 });
 
-closeBtn.addEventListener("click", () => {
-  lightbox.classList.remove("active");
-});
-
-lightbox.addEventListener("click", (e) => {
-  if (e.target === lightbox) {
-    lightbox.classList.remove("active");
-  }
-});
-const words = [
-  "Graphic Designer",
-  "Logo Designer",
-  "Brand Designer",
-  "Photo Editor",
-  "Web Designer",
-  "Creative Designer"
-];
-
-const typing = document.querySelector(".typing");
-
-let wordIndex = 0;
-let charIndex = 0;
-let deleting = false;
-
-function typeEffect() {
-
-  const current = words[wordIndex];
-
-  if (!deleting) {
-
-    typing.textContent = current.substring(0, charIndex++);
-
-    if (charIndex > current.length) {
-      deleting = true;
-      setTimeout(typeEffect, 1600);
-      return;
-    }
-
-  } else {
-
-    typing.textContent = current.substring(0, charIndex--);
-
-    if (charIndex < 0) {
-      deleting = false;
-      wordIndex = (wordIndex + 1) % words.length;
-    }
-
-  }
-
-  setTimeout(typeEffect, deleting ? 45 : 90);
+if (closeBtn) {
+  closeBtn.addEventListener('click', closeLightbox);
 }
 
-typeEffect();
+if (lightbox) {
+  lightbox.addEventListener('click', (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+}
+
+window.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeLightbox();
+});

@@ -1,2 +1,3 @@
 # work-portfolio
-A collection of my graphic design projects, including logos, branding, posters, photo editing, and other creative work.
+
+Kubiss portfolio website — graphic design, branding, photo editing and web design.

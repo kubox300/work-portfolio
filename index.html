@@ -3,58 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <meta name="description" content="Kubiss portfolio — graphic design, branding, photo editing and web design." />
   <title>Kubiss | Creative Designer</title>
-
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-<div class="bg">
-  <div class="orb green"></div>
-  <div class="orb blue"></div>
-  <div class="orb red"></div>
-</div>
+<div class="grain"></div>
+<div class="cursor-glow"></div>
 
-<nav>
-  <div class="logo">Kubiss</div>
+<nav class="navbar">
+  <a class="brand" href="#home" aria-label="Kubiss homepage">
+    <span class="brand-mark">K</span>
+    <span>Kubiss</span>
+  </a>
 
-  <div class="links">
+  <div class="nav-links">
     <a href="#about">About</a>
     <a href="#portfolio">Portfolio</a>
     <a href="#contact">Contact</a>
   </div>
 </nav>
 
-<header>
-  <img src="IMG_20260303_153038_506.jpg" class="avatar" alt="Kubiss">
+<header id="home" class="hero section-fade">
+  <div class="hero-bg">
+    <span class="wave wave-one"></span>
+    <span class="wave wave-two"></span>
+    <span class="wave wave-three"></span>
+  </div>
 
-  <p class="badge">Graphic Designer • Photoshop • Branding • Web Design</p>
+  <div class="hero-content">
+    <div class="avatar-wrap">
+      <img src="IMG_20260303_153038_506.jpg" class="avatar" alt="Kubiss profile photo" />
+    </div>
 
-  <h1>Kubiss</h1>
+    <p class="eyebrow">Graphic Designer • Photoshop • Branding • Web Design</p>
 
-  <p class="hero-text">
-    I'm a <span class="typing"></span>
-    <br><br>
-    I create modern visual experiences that help brands stand out.
-  </p>
+    <h1>Kubiss</h1>
 
-  <div class="buttons">
-    <a href="#portfolio" class="btn primary">View Portfolio</a>
-    <a href="#contact" class="btn secondary">Contact Me</a>
+    <p class="role-line">
+      I’m a <span class="role-switch" id="roleSwitch">Graphic Designer</span>
+    </p>
+
+    <p class="hero-text">
+      I create clean visual identities, posters, photo edits and modern websites with a minimal, professional style.
+    </p>
+
+    <div class="buttons">
+      <a href="#portfolio" class="btn primary">View Portfolio</a>
+      <a href="#contact" class="btn secondary">Contact Me</a>
+    </div>
   </div>
 </header>
 
-<section id="about" class="reveal">
-  <h2>About Me</h2>
+<main>
+  <section id="about" class="section reveal">
+    <div class="section-head">
+      <p class="label">About</p>
+      <h2>Clean visuals, strong first impression.</h2>
+    </div>
 
-  <div class="glass">
-    <p>
-      Hi, I'm Kubiss. I'm studying graphic design and improving my skills every day.
-      I mainly work in Photoshop, creating logos, branding, posters and photo edits.
-      I also enjoy creating websites and learning Blender and video editing.
-    </p>
+    <div class="about-grid">
+      <article class="glass about-card">
+        <p>
+          Hi, I’m Kubiss. I’m studying graphic design and improving my skills every day. I mainly work in Photoshop, creating logos, branding, posters, advertisements and photo edits. I also enjoy creating websites and learning Blender and video editing.
+        </p>
+        <p>
+          I’m always looking for new challenges and opportunities where I can help turn ideas into visuals that feel modern, clean and memorable.
+        </p>
+      </article>
+
+      <article class="glass mini-profile">
+        <img src="IMG_20260303_153038_506.jpg" alt="Kubiss profile photo" />
+        <h3>Kubiss</h3>
+        <p>Creative Designer</p>
+      </article>
+    </div>
 
     <div class="skills">
       <span>Photoshop</span>
@@ -66,73 +90,108 @@
       <span>Blender</span>
       <span>Video Editing</span>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="portfolio" class="reveal">
-  <h2>Selected Work</h2>
-
-  <div class="grid">
-    <div class="card">
-      <img src="LOGO_BIATRO_ILUSTRATOR.png" class="logo-img" alt="Bistro Logo">
-      <h3>Bistro Logo Design</h3>
-      <p>Logo concept for a restaurant or bistro brand.</p>
+  <section id="portfolio" class="section reveal portfolio-section">
+    <div class="section-head">
+      <p class="label">Portfolio</p>
+      <h2>Selected work</h2>
     </div>
 
-    <div class="card">
-      <img src="marshall product .jpg" alt="Marshall Product">
-      <h3>Product Photo Editing</h3>
-      <p>Product photo edit focused on presentation and detail.</p>
+    <div class="grid">
+      <article class="card" data-title="Bistro Logo Design">
+        <div class="image-box logo-box">
+          <img src="LOGO_BIATRO_ILUSTRATOR.png" class="logo-img" alt="Bistro logo design" />
+        </div>
+        <div class="card-body">
+          <span class="tag">Logo Design</span>
+          <h3>Bistro Logo Design</h3>
+          <p>Logo concept for a restaurant or bistro brand.</p>
+        </div>
+      </article>
+
+      <article class="card" data-title="Product Photo Editing">
+        <div class="image-box">
+          <img src="marshall product .jpg" alt="Marshall product photo edit" />
+        </div>
+        <div class="card-body">
+          <span class="tag">Photo Editing</span>
+          <h3>Product Photo Editing</h3>
+          <p>Product photo edit focused on presentation and detail.</p>
+        </div>
+      </article>
+
+      <article class="card" data-title="Product Mockup">
+        <div class="image-box">
+          <img src="marshall product_2.jpg" alt="Marshall product mockup" />
+        </div>
+        <div class="card-body">
+          <span class="tag">Mockup</span>
+          <h3>Product Mockup</h3>
+          <p>Product placed into a realistic interior scene.</p>
+        </div>
+      </article>
+
+      <article class="card" data-title="Creative Photo Edit">
+        <div class="image-box">
+          <img src="photoedit.jpg" alt="Creative photo edit" />
+        </div>
+        <div class="card-body">
+          <span class="tag">Photo Manipulation</span>
+          <h3>Creative Photo Edit</h3>
+          <p>Creative composition and visual photo manipulation.</p>
+        </div>
+      </article>
+
+      <article class="card" data-title="Modern Home Visualization">
+        <div class="image-box">
+          <img src="home.png" alt="Modern home visualization" />
+        </div>
+        <div class="card-body">
+          <span class="tag">Visualization</span>
+          <h3>Modern Home Visualization</h3>
+          <p>Architecture-style visual focused on light and atmosphere.</p>
+        </div>
+      </article>
+
+      <article class="card" data-title="Fantasy Castle">
+        <div class="image-box">
+          <img src="castle.png" alt="Fantasy castle" />
+        </div>
+        <div class="card-body">
+          <span class="tag">Creative Visual</span>
+          <h3>Fantasy Castle</h3>
+          <p>Fantasy environment with cinematic atmosphere.</p>
+        </div>
+      </article>
     </div>
+  </section>
 
-    <div class="card">
-      <img src="marshall product_2.jpg" alt="Marshall Mockup">
-      <h3>Product Mockup</h3>
-      <p>Product placed into a realistic interior scene.</p>
+  <section id="contact" class="section reveal contact">
+    <div class="contact-card">
+      <p class="label">Contact</p>
+      <h2>Let’s work together</h2>
+      <p>
+        Need a logo, poster, branding, photo edit or website? Send me a message and let’s create something clean and eye-catching.
+      </p>
+      <div class="contact-actions">
+        <a href="mailto:nawairjou@gmail.com" class="btn primary">Email Me</a>
+        <span class="discord">Discord: <strong>mrkubiss_23</strong></span>
+      </div>
     </div>
+  </section>
+</main>
 
-    <div class="card">
-      <img src="photoedit.jpg" alt="Creative Photo Edit">
-      <h3>Creative Photo Edit</h3>
-      <p>Photo manipulation and creative visual composition.</p>
-    </div>
-
-    <div class="card">
-      <img src="home.png" alt="Home Visualization">
-      <h3>Modern Home Visualization</h3>
-      <p>Architecture-style visual focused on light and atmosphere.</p>
-    </div>
-
-    <div class="card">
-      <img src="castle.png" alt="Fantasy Castle">
-      <h3>Fantasy Castle</h3>
-      <p>Fantasy environment with cinematic atmosphere.</p>
-    </div>
-  </div>
-</section>
-
-<section id="contact" class="reveal contact">
-  <div class="glass">
-    <h2>Let's Work Together</h2>
-
-    <p>Need a logo, poster, branding, photo edit or website? Contact me.</p>
-
-    <a href="mailto:nawairjou@gmail.com" class="btn primary">Email Me</a>
-
-    <p class="discord">Discord: <strong>mrkubiss_23</strong></p>
-  </div>
-</section>
-
-<div class="lightbox" id="lightbox">
-  <span id="close">&times;</span>
-  <img id="lightbox-img" src="" alt="">
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button id="close" aria-label="Close image">×</button>
+  <img id="lightbox-img" src="" alt="" />
+  <p id="lightbox-title"></p>
 </div>
 
 <footer>
-  © 2026 Kubiss. All rights reserved.
+  <p>© 2026 Kubiss. All rights reserved.</p>
 </footer>
 
 <script src="script.js"></script>
-
 </body>
 </html>
