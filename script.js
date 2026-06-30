@@ -32,3 +32,47 @@ lightbox.addEventListener("click", (e) => {
     lightbox.classList.remove("active");
   }
 });
+const words = [
+  "Graphic Designer",
+  "Logo Designer",
+  "Brand Designer",
+  "Photo Editor",
+  "Web Designer",
+  "Creative Designer"
+];
+
+const typing = document.querySelector(".typing");
+
+let wordIndex = 0;
+let charIndex = 0;
+let deleting = false;
+
+function typeEffect() {
+
+  const current = words[wordIndex];
+
+  if (!deleting) {
+
+    typing.textContent = current.substring(0, charIndex++);
+
+    if (charIndex > current.length) {
+      deleting = true;
+      setTimeout(typeEffect, 1600);
+      return;
+    }
+
+  } else {
+
+    typing.textContent = current.substring(0, charIndex--);
+
+    if (charIndex < 0) {
+      deleting = false;
+      wordIndex = (wordIndex + 1) % words.length;
+    }
+
+  }
+
+  setTimeout(typeEffect, deleting ? 45 : 90);
+}
+
+typeEffect();
