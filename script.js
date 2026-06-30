@@ -44,32 +44,57 @@ if (roleSwitch) {
   // This prevents the hero from feeling like it loads in two separate parts.
   setTimeout(() => {
     changeRole();
-    setInterval(changeRole, 5200);
-  }, 4200);
+    setInterval(changeRole, 3400);
+  }, 1800);
 }
 
 const tooltip = document.getElementById('skillTooltip');
 const tooltipTitle = tooltip?.querySelector('h3');
 const tooltipDesc = tooltip?.querySelector('p');
+
+function placeTooltipUnderPill(pill) {
+  if (!tooltip) return;
+  const rect = pill.getBoundingClientRect();
+  const gap = 14;
+  const tooltipRect = tooltip.getBoundingClientRect();
+  let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+  let top = rect.bottom + gap;
+
+  if (left < 12) left = 12;
+  if (left + tooltipRect.width > window.innerWidth - 12) {
+    left = window.innerWidth - tooltipRect.width - 12;
+  }
+
+  if (top + tooltipRect.height > window.innerHeight - 12) {
+    top = rect.top - tooltipRect.height - gap;
+  }
+
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
+}
+
 if (tooltip) {
   document.querySelectorAll('.skill-pill').forEach(pill => {
     pill.addEventListener('mouseenter', () => {
       tooltipTitle.textContent = pill.dataset.title;
       tooltipDesc.textContent = pill.dataset.desc;
       tooltip.classList.add('active');
+      requestAnimationFrame(() => placeTooltipUnderPill(pill));
     });
-    pill.addEventListener('mousemove', (e) => {
-      const pad = 18;
-      let x = e.clientX + pad;
-      let y = e.clientY + pad;
-      const rect = tooltip.getBoundingClientRect();
-      if (x + rect.width > window.innerWidth - 12) x = e.clientX - rect.width - pad;
-      if (y + rect.height > window.innerHeight - 12) y = e.clientY - rect.height - pad;
-      tooltip.style.left = `${x}px`;
-      tooltip.style.top = `${y}px`;
+
+    pill.addEventListener('focus', () => {
+      tooltipTitle.textContent = pill.dataset.title;
+      tooltipDesc.textContent = pill.dataset.desc;
+      tooltip.classList.add('active');
+      requestAnimationFrame(() => placeTooltipUnderPill(pill));
     });
+
     pill.addEventListener('mouseleave', () => tooltip.classList.remove('active'));
+    pill.addEventListener('blur', () => tooltip.classList.remove('active'));
   });
+
+  window.addEventListener('scroll', () => tooltip.classList.remove('active'));
+  window.addEventListener('resize', () => tooltip.classList.remove('active'));
 }
 
 const lightbox = document.getElementById('lightbox');
