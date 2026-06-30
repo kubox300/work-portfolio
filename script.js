@@ -39,7 +39,13 @@ function changeRole() {
 }
 
 if (roleSwitch) {
-  setInterval(changeRole, 3300);
+  roleSwitch.textContent = roles[0];
+  // Wait until the intro animation is finished before the first role changes.
+  // This prevents the hero from feeling like it loads in two separate parts.
+  setTimeout(() => {
+    changeRole();
+    setInterval(changeRole, 5200);
+  }, 4200);
 }
 
 const tooltip = document.getElementById('skillTooltip');
