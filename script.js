@@ -56,22 +56,48 @@ const lightboxTitle = document.getElementById('lightbox-title');
 const lightboxTools = document.getElementById('lightbox-tools');
 const closeBtn = document.getElementById('close');
 
-document.querySelectorAll('.card').forEach(card => {
-  card.addEventListener('click', () => {
+document.querySelectorAll('.card, .gallery-item').forEach(card => {
+  card.addEventListener('click', (e) => {
+    if (card.tagName === 'A' || card.closest('a')) return;
     const img = card.querySelector('img');
+    if (!img || !lightbox || !lightboxImg) return;
     lightboxImg.src = img.src;
     lightboxImg.alt = img.alt;
-    lightboxTitle.textContent = card.dataset.project || card.querySelector('h3')?.textContent || '';
-    lightboxTools.textContent = card.dataset.tools || '';
+    if (lightboxTitle) lightboxTitle.textContent = card.dataset.project || card.querySelector('h3')?.textContent || '';
+    if (lightboxTools) lightboxTools.textContent = card.dataset.tools || '';
     lightbox.classList.add('active');
     lightbox.setAttribute('aria-hidden', 'false');
   });
 });
 
 function closeLightbox() {
+  if (!lightbox) return;
   lightbox.classList.remove('active');
   lightbox.setAttribute('aria-hidden', 'true');
 }
 if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
 if (lightbox) lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
 window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+
+const slogans=[
+"Create with purpose.","Design that speaks.","Every pixel matters.",
+"Clean visuals. Clear message.","Always improving.","Built with creativity.",
+"Student. Designer. Creator.","Turning ideas into visuals.",
+"Less noise. More meaning.","Designed by Kubiss.",
+"Inspired by simplicity.","Modern ideas. Timeless design.",
+"Creative without limits.","Visuals with impact.","Make it memorable."
+];
+const q=document.getElementById('navQuote');
+if(q){
+ let i=0;
+ q.textContent=slogans[0];
+ setInterval(()=>{
+   q.style.opacity='0';
+   setTimeout(()=>{
+      i=(i+1)%slogans.length;
+      q.textContent=slogans[i];
+      q.style.opacity='1';
+   },400);
+ },10000);
+}

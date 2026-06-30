@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creative Photo Edit | Kubiss</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg">
+    <div class="noise"></div>
+    <div class="mono-orb orb-one"></div>
+    <div class="mono-orb orb-two"></div>
+    <div class="line-wave"></div>
+  </div>
+
+  <nav class="nav">
+    <a href="index.html#top" class="logo">Kubiss</a>
+    <p class="nav-quote" id="navQuote">Create with purpose.</p>
+    <div class="links">
+      <a href="index.html#about">About</a>
+      <a href="index.html#portfolio">Portfolio</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </nav>
+
+  <main class="project-page reveal active">
+    <div class="project-shell">
+      <a class="back-link" href="index.html#portfolio">← Back to portfolio</a>
+
+      <section class="project-hero">
+        <div>
+          <p class="project-kicker">Photo Edit</p>
+          <h1>Creative Photo Edit</h1>
+          <p class="project-description">A creative photo manipulation focused on atmosphere, mood and visual composition. The project shows editing, color work and creative direction.</p>
+          <div class="project-tags"><span>Photoshop</span><span>Photo Manipulation</span></div>
+        </div>
+
+        <div class="project-preview ">
+          <img src="photoedit.jpg" alt="Creative Photo Edit" />
+        </div>
+      </section>
+
+      <section class="gallery-section">
+        <p class="eyebrow">Gallery</p>
+        <h2>Project visuals.</h2>
+        <div class="gallery-grid">
+          <div class="gallery-item " data-project="Creative Photo Edit" data-tools="Photoshop • Photo Manipulation">
+            <img src="photoedit.jpg" alt="Creative Photo Edit" />
+          </div>
+        </div>
+        <p class="gallery-note">This page is prepared as a gallery for this project. You can add more images later by uploading them and duplicating the gallery item block.</p>
+      </section>
+    </div>
+  </main>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button id="close" aria-label="Close image">&times;</button>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="" />
+      <div class="lightbox-caption">
+        <h3 id="lightbox-title"></h3>
+        <p id="lightbox-tools"></p>
+      </div>
+    </div>
+  </div>
+
+  <footer>© 2026 Kubiss. All rights reserved.</footer>
+  <script src="script.js"></script>
+</body>
+</html>
